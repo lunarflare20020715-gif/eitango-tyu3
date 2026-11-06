@@ -2658,3 +2658,17 @@ function doGet() {
   </script>
 </body>
 </html>
+
+<script>
+  // GASの送信先URLを先生のURLに強制固定
+  (function() {
+    const TEACHER_GAS_URL = "https://script.google.com/macros/s/AKfycby08qZs4C9a5NTHu1NkPXbVV8xuFZNaRGkeWZtu2-u9sPGXdlD3Cz5zHzqxUmy-83pt/exec";
+    try {
+      localStorage.setItem('gas_url', TEACHER_GAS_URL);
+      localStorage.setItem('gasUrl', TEACHER_GAS_URL);
+      localStorage.setItem('DEFAULT_GAS_URL', TEACHER_GAS_URL);
+    } catch(e) {}
+    window.gasUrl = TEACHER_GAS_URL;
+    window.DEFAULT_GAS_URL = TEACHER_GAS_URL;
+  })();
+</script>
