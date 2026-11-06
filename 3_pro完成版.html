@@ -1,0 +1,2660 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>中3英単語マスターPro</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Phosphor Icons CDN -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
+    body {
+      font-family: 'Noto Sans JP', 'Inter', sans-serif;
+    }
+    .badge-s { background-color: #fef08a; color: #854d0e; border: 1px solid #facc15; }
+    .badge-a { background-color: #dbeafe; color: #1e40af; border: 1px solid #93c5fd; }
+    .badge-b { background-color: #dcfce7; color: #166534; border: 1px solid #86efac; }
+    .badge-c { background-color: #ffedd5; color: #9a3412; border: 1px solid #fdba74; }
+    .badge-d { background-color: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased selection:bg-indigo-500 selection:text-white">
+
+  <!-- ヘッダー -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+    <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2 cursor-pointer" onclick="showScreen('home')">
+        <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-md shadow-indigo-100">
+          <i class="ph-bold ph-graduation-cap text-2xl"></i>
+        </div>
+        <div>
+          <h1 class="font-extrabold text-lg leading-tight text-slate-900 tracking-tight flex items-center gap-1.5">
+            中3英単語マスター <span class="bg-indigo-100 text-indigo-700 text-xs px-2 py-0.5 rounded-full font-bold">Pro</span>
+          </h1>
+          <p class="text-[11px] text-slate-500">全370語収録・複数Unit自由選択 & 成績自動集計</p>
+        </div>
+      </div>
+
+      <!-- ナビゲーションボタン -->
+      <div class="flex items-center gap-2">
+        <button onclick="showScreen('dictionary')" class="px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-indigo-600 hover:bg-slate-100 rounded-lg transition flex items-center gap-1">
+          <i class="ph-bold ph-book-open-text text-base"></i>
+          <span class="hidden sm:inline">辞書・検索</span>
+        </button>
+        <button onclick="showScreen('analytics')" class="px-3.5 py-1.5 text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition flex items-center gap-1 border border-indigo-200 shadow-xs">
+          <i class="ph-bold ph-chart-pie-slice text-base text-indigo-600"></i>
+          <span>成績表・分析</span>
+        </button>
+        <button onclick="showScreen('manage')" class="px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-indigo-600 hover:bg-slate-100 rounded-lg transition flex items-center gap-1">
+          <i class="ph-bold ph-database text-base"></i>
+          <span class="hidden sm:inline">単語一覧</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- メインコンテンツ領域 -->
+  <main class="flex-1 max-w-4xl w-full mx-auto p-4 sm:p-6">
+
+    <!-- 1. ホーム画面 (条件選択 & 生徒情報入力) -->
+    <div id="screen-home" class="space-y-6">
+      
+      <!-- ようこそカード -->
+      <div class="bg-gradient-to-r from-indigo-600 via-indigo-700 to-purple-700 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden">
+        <div class="relative z-10 space-y-2">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <span class="bg-white/20 backdrop-blur text-white text-xs px-2.5 py-1 rounded-full font-medium inline-block">
+              新学習指導要領・中3教科書 全370単語対応
+            </span>
+            <button onclick="showScreen('analytics')" class="px-3 py-1 rounded-full bg-white text-indigo-700 text-xs font-extrabold hover:bg-indigo-50 shadow-sm transition flex items-center gap-1">
+              <i class="ph-bold ph-chart-line-up"></i> 成績表・弱点カルテを見る
+            </button>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold">中3英単語マスターPro</h2>
+          <p class="text-indigo-100 text-sm max-w-lg">
+            テスト範囲のUnitを自由に組み合わせて練習できます。結果は先生のスプレッドシートに自動提出されます。
+          </p>
+        </div>
+        <i class="ph-duotone ph-books text-9xl absolute -right-6 -bottom-8 opacity-15"></i>
+      </div>
+
+      <!-- 設定パネル -->
+      <div class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm space-y-6">
+
+        <!-- 0. 生徒氏名入力 (名前のみ・必須) -->
+        <div class="bg-indigo-50/70 border-2 border-indigo-200 rounded-xl p-4 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <label class="block text-xs font-black uppercase tracking-wider text-indigo-950 flex items-center gap-1.5">
+              <i class="ph-bold ph-user text-indigo-600 text-base"></i>
+              お名前の入力 <span class="bg-rose-500 text-white text-[10px] font-black px-1.5 py-0.5 rounded">必須</span>
+            </label>
+            <span class="text-[11px] text-indigo-700 font-semibold">※一度入れると次回から自動記憶されます</span>
+          </div>
+
+          <div class="relative">
+            <input type="text" id="student-name-input" placeholder="氏名を入力してください (例: 山田 太郎)" 
+              class="w-full px-4 py-3 rounded-xl border border-indigo-200 bg-white text-sm font-black text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-xs">
+            <i class="ph-bold ph-identification-card text-slate-400 absolute right-3.5 top-3.5 text-lg"></i>
+          </div>
+          
+          <div id="student-input-alert" class="hidden text-[11px] font-bold text-rose-600 flex items-center gap-1">
+            <i class="ph-bold ph-warning-circle"></i> 成績を記録するため「氏名」を入力してください
+          </div>
+        </div>
+
+        <!-- 1. 学習モードの選択 -->
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2.5">
+            1. 学習モードを選択
+          </label>
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3" id="mode-selector">
+            <button type="button" onclick="selectMode('en-ja')" id="btn-mode-en-ja" class="mode-btn p-4 rounded-xl border-2 text-left transition flex flex-col gap-1 border-indigo-600 bg-indigo-50/50">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-slate-900 text-sm">英語 → 日本語</span>
+                <i class="ph-bold ph-translate text-indigo-600 text-lg"></i>
+              </div>
+              <p class="text-xs text-slate-500">英単語を見て意味を選ぶ基本練習</p>
+            </button>
+            <button type="button" onclick="selectMode('ja-en')" id="btn-mode-ja-en" class="mode-btn p-4 rounded-xl border-2 border-slate-200 hover:border-slate-300 text-left transition flex flex-col gap-1">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-slate-900 text-sm">日本語 → 英語</span>
+                <i class="ph-bold ph-pen text-indigo-600 text-lg"></i>
+              </div>
+              <p class="text-xs text-slate-500">意味から正確な英単語を連想</p>
+            </button>
+            <button type="button" onclick="selectMode('fill-in')" id="btn-mode-fill-in" class="mode-btn p-4 rounded-xl border-2 border-slate-200 hover:border-slate-300 text-left transition flex flex-col gap-1">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-slate-900 text-sm">英文穴埋め (長文)</span>
+                <i class="ph-bold ph-article text-indigo-600 text-lg"></i>
+              </div>
+              <p class="text-xs text-slate-500">文脈から ( ) に入る単語を判別</p>
+            </button>
+            <!-- 裏モード: スペルタイピング -->
+            <button type="button" onclick="selectMode('spelling')" id="btn-mode-spelling" class="mode-btn p-4 rounded-xl border-2 border-purple-200 bg-gradient-to-br from-purple-50/60 to-indigo-50/60 hover:border-purple-500 text-left transition flex flex-col gap-1 relative group">
+              <div class="flex items-center justify-between">
+                <span class="font-extrabold text-purple-900 text-sm flex items-center gap-1.5">
+                  <i class="ph-fill ph-keyboard text-purple-600"></i> スペルタイピング
+                </span>
+                <span class="bg-gradient-to-r from-purple-600 to-pink-600 text-white text-[10px] font-black px-2 py-0.5 rounded-full shadow-xs tracking-tight">
+                  裏モード
+                </span>
+              </div>
+              <p class="text-xs text-purple-700 font-medium">_ _ _ _ に文字を埋めるパズル</p>
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. 難易度レベルの選択 -->
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2.5">
+            2. 難易度を選択
+          </label>
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2.5" id="level-selector">
+            
+            <button type="button" onclick="selectLevel('beginner')" id="btn-lvl-beginner" class="lvl-btn p-3 rounded-xl border-2 border-slate-200 hover:border-slate-300 text-center transition flex flex-col items-center">
+              <span class="font-extrabold text-sm text-slate-900">初級</span>
+              <span class="text-[10px] text-amber-700 font-bold bg-amber-100 px-1.5 py-0.5 rounded mt-1">S 100%</span>
+              <span class="text-[10px] text-slate-400 mt-0.5">超重要・基礎</span>
+            </button>
+
+            <button type="button" onclick="selectLevel('intermediate')" id="btn-lvl-intermediate" class="lvl-btn p-3 rounded-xl border-2 border-indigo-600 bg-indigo-50/50 text-center transition flex flex-col items-center">
+              <span class="font-extrabold text-sm text-slate-900">中級</span>
+              <span class="text-[10px] text-blue-700 font-bold bg-blue-100 px-1.5 py-0.5 rounded mt-1">S 30% / A 70%</span>
+              <span class="text-[10px] text-slate-400 mt-0.5">偏差値50標準</span>
+            </button>
+
+            <button type="button" onclick="selectLevel('advanced')" id="btn-lvl-advanced" class="lvl-btn p-3 rounded-xl border-2 border-slate-200 hover:border-slate-300 text-center transition flex flex-col items-center">
+              <span class="font-extrabold text-sm text-slate-900">上級</span>
+              <span class="text-[10px] text-emerald-700 font-bold bg-emerald-100 px-1.5 py-0.5 rounded mt-1">A 30% / B 70%</span>
+              <span class="text-[10px] text-slate-400 mt-0.5">偏差値55発展</span>
+            </button>
+
+            <button type="button" onclick="selectLevel('super')" id="btn-lvl-super" class="lvl-btn p-3 rounded-xl border-2 border-slate-200 hover:border-slate-300 text-center transition flex flex-col items-center">
+              <span class="font-extrabold text-sm text-slate-900">超級</span>
+              <span class="text-[10px] text-orange-700 font-bold bg-orange-100 px-1.5 py-0.5 rounded mt-1">B 30% / C 70%</span>
+              <span class="text-[10px] text-slate-400 mt-0.5">偏差値60難関</span>
+            </button>
+
+            <button type="button" onclick="selectLevel('hell')" id="btn-lvl-hell" class="lvl-btn p-3 rounded-xl border-2 border-slate-200 hover:border-red-400 text-center transition flex flex-col items-center group">
+              <span class="font-extrabold text-sm text-red-600 flex items-center gap-0.5">
+                <i class="ph-fill ph-fire"></i>地獄級
+              </span>
+              <span class="text-[10px] text-rose-700 font-bold bg-rose-100 px-1.5 py-0.5 rounded mt-1">C 30% / D 70%</span>
+              <span class="text-[10px] text-slate-400 mt-0.5">超難問・マニア</span>
+            </button>
+
+            <button type="button" onclick="selectLevel('random')" id="btn-lvl-random" class="lvl-btn p-3 rounded-xl border-2 border-slate-200 hover:border-slate-300 text-center transition flex flex-col items-center">
+              <span class="font-extrabold text-sm text-purple-700 flex items-center gap-0.5">
+                <i class="ph-bold ph-shuffle"></i>ランダム
+              </span>
+              <span class="text-[10px] text-purple-700 font-bold bg-purple-100 px-1.5 py-0.5 rounded mt-1">全範囲混合</span>
+              <span class="text-[10px] text-slate-400 mt-0.5">実力測定</span>
+            </button>
+
+          </div>
+        </div>
+
+        <!-- 3. 出題範囲 (複数Unit自由選択チェックボックス) と 出題数 -->
+        <div class="space-y-4 pt-2 border-t border-slate-100">
+          
+          <div>
+            <div class="flex items-center justify-between flex-wrap gap-2 mb-2">
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+                <i class="ph-bold ph-check-square-offset text-indigo-600 text-base"></i>
+                3. 出題範囲のUnitを選択（複数選択OK！）
+              </label>
+              <div class="flex items-center gap-2 text-xs">
+                <button type="button" onclick="setAllUnits(true)" class="px-2.5 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-[11px] transition">
+                  すべて選択
+                </button>
+                <button type="button" onclick="setAllUnits(false)" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 font-semibold text-[11px] transition">
+                  全解除
+                </button>
+                <span id="unit-selection-summary" class="bg-slate-100 text-slate-700 font-bold px-2 py-0.5 rounded-full text-[11px]">
+                  全370語対象
+                </span>
+              </div>
+            </div>
+
+            <!-- Unitチェックボックスタグ群 -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2" id="unit-checkbox-container"></div>
+            
+            <div id="unit-select-alert" class="hidden text-xs font-bold text-rose-600 mt-2 flex items-center gap-1">
+              <i class="ph-bold ph-warning-circle"></i> 少なくとも1つ以上のUnitを選択してください
+            </div>
+          </div>
+
+          <!-- 問題数選択 -->
+          <div class="pt-2 border-t border-slate-100 flex items-center justify-between flex-wrap gap-3">
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500">
+              出題数
+            </label>
+            <div class="flex gap-2 w-full sm:w-64">
+              <button type="button" onclick="selectCount(10)" id="btn-count-10" class="count-btn flex-1 py-2.5 rounded-xl border-2 border-indigo-600 bg-indigo-50/50 font-bold text-xs text-indigo-900 transition">
+                10 問
+              </button>
+              <button type="button" onclick="selectCount(20)" id="btn-count-20" class="count-btn flex-1 py-2.5 rounded-xl border-2 border-slate-200 font-bold text-xs text-slate-700 hover:border-slate-300 transition">
+                20 問
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- スタートボタン -->
+        <div class="pt-2">
+          <button type="button" onclick="startQuiz()" class="w-full py-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-[0.99] text-white font-extrabold text-base shadow-lg shadow-indigo-200 transition flex items-center justify-center gap-2">
+            <i class="ph-bold ph-play text-xl"></i>
+            テストを開始する
+          </button>
+        </div>
+
+      </div>
+
+      <!-- 単語帳データ状況バナー -->
+      <div class="bg-indigo-50/60 border border-indigo-100 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-slate-700">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center shrink-0">
+            <i class="ph-bold ph-books text-lg"></i>
+          </div>
+          <div>
+            <span class="font-extrabold text-slate-900">収録単語数: <span id="total-words-count" class="text-indigo-600 font-black text-sm">370</span> 語</span>
+            <div class="text-[11px] text-slate-500">全370語がHTML内に完全収録済み。ネット接続が切れても快適に学習できます。</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+          <button onclick="showScreen('manage')" class="flex-1 sm:flex-none px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold shadow-xs transition flex items-center justify-center gap-1">
+            単語一覧を見る <i class="ph-bold ph-caret-right"></i>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 2. テスト出題画面 -->
+    <div id="screen-quiz" class="hidden space-y-5">
+      <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex items-center justify-between gap-3">
+        <div class="flex items-center gap-2 flex-wrap">
+          <span id="quiz-level-badge" class="px-2.5 py-1 rounded-md text-xs font-bold badge-b">中級</span>
+          <span id="quiz-mode-badge" class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded text-[11px] font-bold">英語 → 日本語</span>
+          <span id="quiz-student-badge" class="hidden sm:inline bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded text-[11px] font-bold">
+            <i class="ph-bold ph-user"></i> <span id="quiz-student-display-name">生徒</span>
+          </span>
+        </div>
+        
+        <div class="flex items-center gap-4">
+          <div class="text-xs font-bold text-slate-600">
+            第 <span id="current-q-index" class="text-indigo-600 font-black text-base">1</span> / <span id="total-q-index">10</span> 問
+          </div>
+          <button onclick="confirmQuitQuiz()" class="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-100 transition" title="中断してホームへ">
+            <i class="ph-bold ph-x text-lg"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+        <div id="progress-bar-fill" class="bg-indigo-600 h-full rounded-full transition-all duration-300" style="width: 10%"></div>
+      </div>
+
+      <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/90 shadow-sm space-y-6">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+          <div class="flex items-center gap-2">
+            <span id="q-unit-tag" class="text-[11px] font-black text-indigo-700 bg-indigo-50 px-2.5 py-1 rounded-md tracking-wide">UNIT 1</span>
+            <span id="q-rank-tag" class="text-[10px] font-bold px-1.5 py-0.5 rounded badge-b">Bランク</span>
+          </div>
+          <button id="btn-speak-word" onclick="speakCurrentWord()" class="px-3 py-1.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-bold transition flex items-center gap-1.5">
+            <i class="ph-bold ph-speaker-high text-base"></i> 発音を聴く
+          </button>
+        </div>
+
+        <div class="space-y-2 text-center py-4">
+          <div id="question-prompt-label" class="text-xs font-bold text-slate-400 uppercase tracking-wider">
+            この英単語の意味を選んでください
+          </div>
+          <div id="question-main-text" class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight leading-relaxed">
+            discover
+          </div>
+          <div id="question-sub-text" class="text-xs sm:text-sm text-slate-500 font-medium hidden"></div>
+        </div>
+
+        <div id="choices-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2"></div>
+
+        <div id="spelling-container" class="hidden space-y-5 pt-2">
+          <div id="spelling-slots" class="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 py-4 min-h-[70px]"></div>
+
+          <div class="flex items-center justify-center gap-2 text-xs">
+            <button type="button" onclick="giveSpellingHint()" class="px-3.5 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 font-bold transition flex items-center gap-1 shadow-xs">
+              <i class="ph-bold ph-lightbulb"></i> ヒント (1文字開ける)
+            </button>
+            <button type="button" onclick="handleSpellingBackspace()" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition flex items-center gap-1 shadow-xs">
+              <i class="ph-bold ph-backspace"></i> 1文字消す
+            </button>
+            <button type="button" onclick="checkSpellingAnswer()" class="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold transition flex items-center gap-1 shadow-md shadow-indigo-100">
+              <i class="ph-bold ph-check"></i> 回答を確定
+            </button>
+          </div>
+
+          <div id="spelling-keyboard" class="max-w-md mx-auto space-y-1.5 p-3 rounded-2xl bg-slate-100/90 border border-slate-200"></div>
+        </div>
+
+        <div id="feedback-panel" class="hidden p-5 rounded-2xl border transition-all duration-300 space-y-4">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b pb-3" id="feedback-header-border">
+            <div class="flex items-center gap-3">
+              <div id="feedback-icon" class="w-9 h-9 rounded-full flex items-center justify-center shrink-0 shadow-xs"></div>
+              <div>
+                <div id="feedback-title" class="font-extrabold text-base"></div>
+                <div id="feedback-desc" class="text-xs font-semibold"></div>
+              </div>
+            </div>
+            <button type="button" onclick="goToNextQuestion()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-indigo-600 text-white font-bold text-xs shadow-md transition flex items-center justify-center gap-1.5 self-end sm:self-center">
+              次の問題へ <i class="ph-bold ph-arrow-right"></i>
+            </button>
+          </div>
+
+          <div class="space-y-2 pt-1">
+            <div class="text-[11px] font-black uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+              <i class="ph-bold ph-books text-indigo-600"></i> 各選択肢の単語解説
+            </div>
+            <div id="feedback-choices-explanation" class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. テスト結果発表画面 -->
+    <div id="screen-result" class="hidden space-y-6">
+      <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm text-center space-y-6">
+        <div class="space-y-2">
+          <div id="result-student-display" class="text-xs font-bold text-indigo-600 uppercase tracking-wider">
+            山田 太郎 さんの結果
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-black text-slate-900">テスト終了！お疲れ様でした</h2>
+          
+          <!-- 送信通知ステータス -->
+          <div id="result-sheet-sent-notice" class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-800 border border-emerald-200 px-3.5 py-1.5 rounded-full text-xs font-bold">
+            <i class="ph-bold ph-check-circle text-emerald-600 text-base"></i> 
+            <span id="result-sheet-sent-text">先生のスプレッドシートへ成績を自動送信しました！</span>
+          </div>
+        </div>
+
+        <div class="max-w-xs mx-auto p-6 rounded-2xl bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-100 flex flex-col items-center justify-center">
+          <div class="text-xs font-bold text-slate-500 mb-1">獲得スコア</div>
+          <div id="result-score-percent" class="text-5xl font-black text-indigo-600">
+            80<span class="text-xl font-normal text-slate-400">%</span>
+          </div>
+          <div class="text-xs text-slate-600 font-bold mt-2">
+            正解数: <span id="result-score-correct" class="text-indigo-600 font-black text-sm">8</span> / <span id="result-score-total">10</span> 問
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row justify-center gap-3">
+          <button onclick="retryCurrentQuiz()" class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-md transition flex items-center justify-center gap-1.5">
+            <i class="ph-bold ph-arrows-clockwise text-base"></i> もう一度挑戦
+          </button>
+          <button onclick="showScreen('home')" class="px-6 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition flex items-center justify-center gap-1.5">
+            <i class="ph-bold ph-house text-base"></i> ホームへ戻る
+          </button>
+          <button onclick="showScreen('analytics')" class="px-6 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-indigo-700 font-bold text-xs transition flex items-center justify-center gap-1.5">
+            <i class="ph-bold ph-chart-pie-slice text-base"></i> 成績分析を見る
+          </button>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden p-5">
+        <h3 class="font-extrabold text-sm text-slate-900 mb-3 flex items-center gap-1.5">
+          <i class="ph-bold ph-list-checks text-indigo-600"></i> 出題単語の振り返り & 音声確認
+        </h3>
+        <div id="result-review-list" class="divide-y divide-slate-100"></div>
+      </div>
+    </div>
+
+    <!-- 4. 成績分析・集計画面 -->
+    <div id="screen-analytics" class="hidden space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <h2 class="text-xl sm:text-2xl font-black text-slate-900 flex items-center gap-2">
+            <i class="ph-bold ph-chalkboard-teacher text-indigo-600"></i> 教師用アナリティクス & 生徒解答集計
+          </h2>
+          <p class="text-xs text-slate-500">生徒全員の解答履歴を自動集計・クラス全体の弱点単語と個別カルテを分析</p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button onclick="openSheetSyncModal()" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-sm">
+            <i class="ph-bold ph-google-logo text-sm"></i> スプレッドシート自動送信設定
+          </button>
+          <button onclick="exportLogsToCSV()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition flex items-center gap-1">
+            <i class="ph-bold ph-download-simple text-sm"></i> 全ログCSV出力
+          </button>
+          <button onclick="clearAnalyticsLogs()" class="px-3 py-2 text-rose-600 hover:bg-rose-50 rounded-lg text-xs font-bold transition flex items-center gap-1">
+            <i class="ph-bold ph-trash text-sm"></i> 履歴消去
+          </button>
+        </div>
+      </div>
+
+      <div id="sheet-sync-status-bar" class="p-3.5 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-between text-xs text-slate-600">
+        <div class="flex items-center gap-2.5">
+          <span id="sheet-status-dot" class="w-3 h-3 rounded-full bg-slate-400"></span>
+          <span id="sheet-status-text" class="font-bold">Google スプレッドシート連携: 未設定（ローカル集計中）</span>
+        </div>
+        <button onclick="openSheetSyncModal()" class="text-indigo-600 hover:underline font-bold text-xs">設定を変更する</button>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <div class="text-[11px] font-bold text-slate-400">総受験回数</div>
+          <div id="stat-total-quizzes" class="text-2xl font-black text-slate-900 mt-1">0 <span class="text-xs font-normal text-slate-400">回</span></div>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <div class="text-[11px] font-bold text-slate-400">解答された総問題数</div>
+          <div id="stat-total-questions" class="text-2xl font-black text-indigo-600 mt-1">0 <span class="text-xs font-normal text-slate-400">問</span></div>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <div class="text-[11px] font-bold text-slate-400">学級全体の平均正答率</div>
+          <div id="stat-avg-accuracy" class="text-2xl font-black text-emerald-600 mt-1">0<span class="text-xs font-normal text-slate-400">%</span></div>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <div class="text-[11px] font-bold text-slate-400">要指導・苦手単語</div>
+          <div id="stat-weak-words-count" class="text-2xl font-black text-rose-600 mt-1">0 <span class="text-xs font-normal text-slate-400">語</span></div>
+        </div>
+      </div>
+
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+          <div class="flex items-center gap-2">
+            <i class="ph-bold ph-identification-card text-indigo-600 text-lg"></i>
+            <h3 class="font-extrabold text-sm text-slate-900">生徒個別カルテ分析</h3>
+          </div>
+          <div class="flex items-center gap-2">
+            <label class="text-xs font-bold text-slate-500">生徒を選択:</label>
+            <select id="student-filter-select" onchange="renderStudentReport()" class="p-2 border border-slate-200 rounded-xl text-xs font-bold bg-white text-slate-800">
+              <option value="ALL">全生徒の合計・全体</option>
+            </select>
+          </div>
+        </div>
+        <div id="student-report-card" class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-xs space-y-2"></div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+          <h3 class="font-extrabold text-sm text-slate-900 flex items-center gap-1.5">
+            <i class="ph-bold ph-trophy text-amber-500"></i> 難易度ランク別の正答率
+          </h3>
+          <div class="space-y-3" id="rank-accuracy-container"></div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+          <h3 class="font-extrabold text-sm text-slate-900 flex items-center justify-between">
+            <span class="flex items-center gap-1.5">
+              <i class="ph-bold ph-warning-circle text-rose-500"></i> 間違いが多い苦手単語 ワースト10
+            </span>
+            <span class="text-[11px] font-normal text-slate-400">指導優先単語</span>
+          </h3>
+          <div id="weak-words-list" class="space-y-2 text-xs max-h-96 overflow-y-auto pr-1"></div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="p-4 border-b border-slate-100 flex items-center justify-between">
+          <h3 class="font-extrabold text-sm text-slate-900">解答ログ一覧 (最新50件)</h3>
+          <span class="text-[11px] text-slate-400">端末内および送信済みログ</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs text-slate-600">
+            <thead class="bg-slate-50 text-slate-400 uppercase font-semibold text-[10px]">
+              <tr>
+                <th class="p-3">日時</th>
+                <th class="p-3">生徒名</th>
+                <th class="p-3">出題範囲</th>
+                <th class="p-3">モード</th>
+                <th class="p-3">難易度</th>
+                <th class="p-3">得点</th>
+                <th class="p-3">正答率</th>
+                <th class="p-3">間違えた単語</th>
+              </tr>
+            </thead>
+            <tbody id="logs-table-body" class="divide-y divide-slate-100"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. 英和スマート辞書画面 -->
+    <div id="screen-dictionary" class="hidden space-y-6">
+      <div class="bg-gradient-to-r from-sky-600 to-indigo-600 rounded-2xl p-6 text-white shadow-lg space-y-2">
+        <div class="flex items-center gap-2">
+          <span class="bg-white/20 text-white text-xs px-2.5 py-0.5 rounded-full font-bold">Smart Dictionary</span>
+          <span class="text-xs text-sky-100">発音・例文・意味の即座検索</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-black">英和スマート辞書</h2>
+        <p class="text-sky-100 text-xs sm:text-sm">
+          教科書全370語の検索はもちろん、長文で出会った知らない英単語もネイティブ発音付きで即座に調べられます。
+        </p>
+      </div>
+
+      <div class="bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <form onsubmit="handleDictionarySearch(event)" class="relative flex items-center gap-2">
+          <div class="relative flex-1">
+            <input type="text" id="dict-search-input" placeholder="調べたい英単語を入力 (例: curious, discover, climate)..." 
+              class="w-full pl-11 pr-10 py-3 rounded-xl border-2 border-slate-200 focus:border-indigo-500 focus:outline-none text-sm font-semibold transition">
+            <i class="ph-bold ph-magnifying-glass text-slate-400 absolute left-3.5 top-3.5 text-lg"></i>
+            <button type="button" onclick="clearDictSearch()" class="absolute right-3 top-3 text-slate-400 hover:text-slate-600">
+              <i class="ph-bold ph-x-circle text-lg"></i>
+            </button>
+          </div>
+          <button type="submit" class="px-5 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-md transition flex items-center gap-1.5 shrink-0">
+            <i class="ph-bold ph-magnifying-glass text-base"></i> 検索
+          </button>
+        </form>
+
+        <div class="flex items-center gap-1.5 flex-wrap text-xs">
+          <span class="text-slate-400 text-[11px] font-bold">よく調べる例:</span>
+          <button type="button" onclick="quickDictSearch('curious')" class="px-2.5 py-1 bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 rounded-lg text-slate-600 text-[11px] font-medium transition">curious</button>
+          <button type="button" onclick="quickDictSearch('sustainable')" class="px-2.5 py-1 bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 rounded-lg text-slate-600 text-[11px] font-medium transition">sustainable</button>
+          <button type="button" onclick="quickDictSearch('protect')" class="px-2.5 py-1 bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 rounded-lg text-slate-600 text-[11px] font-medium transition">protect</button>
+          <button type="button" onclick="quickDictSearch('volunteer')" class="px-2.5 py-1 bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 rounded-lg text-slate-600 text-[11px] font-medium transition">volunteer</button>
+        </div>
+      </div>
+
+      <div id="dict-result-container" class="space-y-4">
+        <div id="dict-initial-guide" class="bg-white rounded-2xl p-8 border border-slate-200 text-center space-y-3">
+          <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl mx-auto flex items-center justify-center text-3xl">
+            <i class="ph-duotone ph-book-open"></i>
+          </div>
+          <h3 class="font-extrabold text-base text-slate-800">英単語を入力して検索してください</h3>
+          <p class="text-xs text-slate-500 max-w-md mx-auto">
+            教科書収録単語ならランクや穴埋め例文も同時に表示。未収録の単語もオンライン辞書からネイティブ発音を取得します。
+          </p>
+        </div>
+
+        <div id="dict-card" class="hidden bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-6"></div>
+
+        <div id="dict-loading" class="hidden bg-white rounded-2xl p-8 border border-slate-200 text-center space-y-3">
+          <div class="w-8 h-8 border-3 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <p class="text-xs text-slate-500 font-semibold">オンライン辞書から単語を検索中...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. 単語管理画面 -->
+    <div id="screen-manage" class="hidden space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <h2 class="text-xl sm:text-2xl font-black text-slate-900 flex items-center gap-2">
+            <i class="ph-bold ph-database text-indigo-600"></i> 単語データの確認 & 追加
+          </h2>
+          <p class="text-xs text-slate-500">収録されている全370語の確認や新しい単語の個別追加が可能です</p>
+        </div>
+        <div class="flex gap-2">
+          <button onclick="openAddWordModal()" class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-sm">
+            <i class="ph-bold ph-plus text-sm"></i> 1語追加
+          </button>
+        </div>
+      </div>
+
+      <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col sm:flex-row gap-3 items-center justify-between">
+        <div class="relative w-full sm:w-80">
+          <input type="text" id="manage-search-input" oninput="renderManageTable()" placeholder="英単語や日本語で検索..." 
+            class="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <i class="ph-bold ph-magnifying-glass text-slate-400 absolute left-3 top-2.5 text-sm"></i>
+        </div>
+
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+          <select id="manage-rank-filter" onchange="renderManageTable()" class="px-3 py-2 rounded-lg border border-slate-200 text-xs text-slate-700 bg-white">
+            <option value="ALL">全ランク表示</option>
+            <option value="S">Sランクのみ</option>
+            <option value="A">Aランクのみ</option>
+            <option value="B">Bランクのみ</option>
+            <option value="C">Cランクのみ</option>
+            <option value="D">Dランクのみ</option>
+          </select>
+
+          <button onclick="resetDefaultWords()" class="px-3 py-2 text-indigo-600 hover:bg-indigo-50 rounded-lg text-xs font-bold transition flex items-center gap-1 whitespace-nowrap">
+            <i class="ph-bold ph-arrow-counter-clockwise"></i> 全370語に戻す
+          </button>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs text-slate-600">
+            <thead class="bg-slate-50 text-slate-400 uppercase font-semibold text-[10px]">
+              <tr>
+                <th class="p-3">ランク</th>
+                <th class="p-3">Unit</th>
+                <th class="p-3">英単語</th>
+                <th class="p-3">日本語の意味</th>
+                <th class="p-3">例文 (穴埋め)</th>
+                <th class="p-3 text-center">発音</th>
+                <th class="p-3 text-center">操作</th>
+              </tr>
+            </thead>
+            <tbody id="manage-table-body" class="divide-y divide-slate-100"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- モーダル: 1語追加 -->
+  <div id="modal-add-word" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 class="font-bold text-base text-slate-900">新しい英単語を追加</h3>
+        <button onclick="closeAddWordModal()" class="text-slate-400 hover:text-slate-600">
+          <i class="ph-bold ph-x text-lg"></i>
+        </button>
+      </div>
+      <div class="space-y-3 text-xs">
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">ランク (難易度)</label>
+            <select id="new-word-rank" class="w-full p-2 border border-slate-200 rounded-lg font-bold">
+              <option value="S">S (超重要)</option>
+              <option value="A">A (偏差値50標準)</option>
+              <option value="B" selected>B (偏差値55発展)</option>
+              <option value="C">C (偏差値60難関)</option>
+              <option value="D">D (超難問・固有名詞)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-600 mb-1">Unit</label>
+            <input type="text" id="new-word-unit" placeholder="例: unit1" class="w-full p-2 border border-slate-200 rounded-lg">
+          </div>
+        </div>
+        <div>
+          <label class="block font-bold text-slate-600 mb-1">英単語</label>
+          <input type="text" id="new-word-text" placeholder="例: environment" class="w-full p-2 border border-slate-200 rounded-lg font-bold">
+        </div>
+        <div>
+          <label class="block font-bold text-slate-600 mb-1">日本語の意味</label>
+          <input type="text" id="new-word-meaning" placeholder="例: 環境" class="w-full p-2 border border-slate-200 rounded-lg">
+        </div>
+        <div>
+          <label class="block font-bold text-slate-600 mb-1">穴埋め例文 (カッコを含む文)</label>
+          <input type="text" id="new-word-sentence" placeholder="例: We must protect our ( )." class="w-full p-2 border border-slate-200 rounded-lg">
+        </div>
+        <div>
+          <label class="block font-bold text-slate-600 mb-1">例文の日本語訳</label>
+          <input type="text" id="new-word-trans" placeholder="例: 私たちは環境を守らなければなりません。" class="w-full p-2 border border-slate-200 rounded-lg">
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
+        <button onclick="closeAddWordModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg">キャンセル</button>
+        <button onclick="submitNewWord()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg shadow-sm">追加する</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- モーダル: スプレッドシート自動集計連携設定 (GAS) -->
+  <div id="modal-sheet-sync" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center">
+            <i class="ph-bold ph-google-logo text-lg"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-base text-slate-900">先生用 成績自動送信スプレッドシート設定</h3>
+            <p class="text-[11px] text-slate-500">生徒が解き終わると、作成者様のシートへ自動で成績が1行ずつ蓄積されます</p>
+          </div>
+        </div>
+        <button onclick="closeSheetSyncModal()" class="text-slate-400 hover:text-slate-600">
+          <i class="ph-bold ph-x text-lg"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Google Apps Script (ウェブアプリURL)</label>
+          <input type="url" id="sheet-gas-url-input" placeholder="https://script.google.com/macros/s/xxxxxx/exec" 
+            class="w-full p-3 rounded-xl border-2 border-slate-200 text-xs focus:border-emerald-500 font-mono shadow-xs">
+          <p class="text-[10px] text-slate-500 mt-1">※ 末尾が <strong>/exec</strong> になっているURLを貼り付けてください。</p>
+        </div>
+
+        <div class="bg-emerald-50/70 border border-emerald-200 rounded-xl p-3.5 space-y-2 text-[11px] text-slate-700">
+          <div class="font-extrabold text-emerald-900 flex items-center gap-1.5">
+            <i class="ph-bold ph-check-circle text-emerald-600"></i> 設定確認チェック
+          </div>
+          <ol class="list-decimal list-inside space-y-1 text-slate-700 pl-1">
+            <li>Googleスプレッドシートのメニュー <strong>[拡張機能] → [Apps Script]</strong> を開く</li>
+            <li>「デプロイ」画面で <strong>アクセスできるユーザーが「全員」</strong> になっていることを確認</li>
+            <li>発行されたURLを上の枠に貼り付けて「設定を保存」</li>
+          </ol>
+          
+          <div class="pt-1">
+            <button type="button" onclick="copyGasCode(this)" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] text-white font-extrabold text-xs rounded-xl shadow-xs transition flex items-center justify-center gap-2">
+              <i class="ph-bold ph-copy text-base"></i>
+              <span>GASコードをコピーする</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-between items-center pt-2 border-t border-slate-100">
+        <button onclick="testSheetConnection()" class="px-3.5 py-2.5 bg-emerald-100 hover:bg-emerald-200 text-emerald-900 rounded-lg text-xs font-extrabold flex items-center gap-1.5 transition">
+          <i class="ph-bold ph-paper-plane-tilt text-sm"></i> 接続テスト送信を実行
+        </button>
+        <div class="flex gap-2">
+          <button onclick="closeSheetSyncModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg">キャンセル</button>
+          <button onclick="saveSheetGasUrl()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg shadow-sm">設定を保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- トースト通知 -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-xl text-xs font-medium flex items-center gap-2 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+    <i id="toast-icon" class="ph-bold ph-check text-emerald-400 text-base"></i>
+    <span id="toast-message">保存しました</span>
+  </div>
+
+  <!-- アプリケーションスクリプト -->
+  <script>
+    // ==========================================
+    // 1. 中3教科書 全370単語 完全統合マスターデータベース
+    // ==========================================
+    const DEFAULT_WORDS = [
+      { id: 1, rank: "B", unit: "unit0", word: "discover", meaning: "…を発見する", sentence: "We can ( ) many interesting things in the museum.", translation: "私たちは博物館で多くの興味深いものを発見することができます。", answer: "discover" },
+      { id: 2, rank: "A", unit: "unit0", word: "side", meaning: "側、面", sentence: "There are two ( ) to every story.", translation: "すべての話には2つの側面があります。", answer: "sides" },
+      { id: 3, rank: "A", unit: "unit0", word: "finally", meaning: "ついに、やっと", sentence: "We ( ) arrived at the station after a long trip.", translation: "私たちは長い旅のあとについに駅に到着しました。", answer: "finally" },
+      { id: 4, rank: "D", unit: "unit0", word: "musical", meaning: "ミュージカル", sentence: "I want to see a famous Broadway ( ) someday.", translation: "私はいつか有名なブロードウェイのミュージカルを見たいです。", answer: "musical" },
+      { id: 5, rank: "A", unit: "unit0", word: "actor", meaning: "俳優", sentence: "He is a very popular ( ) in Japan.", translation: "彼は日本でとても人気のある俳優です。", answer: "actor" },
+      { id: 6, rank: "A", unit: "unit0", word: "into", meaning: "…に熱中して", sentence: "He really got ( ) playing soccer these days.", translation: "彼は最近サッカーをすることに本当に熱中しています。", answer: "into" },
+      { id: 7, rank: "D", unit: "unit1", word: "fashion", meaning: "人気のもの、ファッション", sentence: "She is very interested in modern ( ).", translation: "彼女は現代のファッションにとても興味があります。", answer: "fashion" },
+      { id: 8, rank: "B", unit: "unit1", word: "regional", meaning: "地方の、地域特有の", sentence: "We enjoyed delicious ( ) food during our trip.", translation: "私たちは旅行中にその地域特有の美味しい料理を楽しみました。", answer: "regional" },
+      { id: 9, rank: "S", unit: "unit1", word: "been", meaning: "beの過去分詞", sentence: "I have never ( ) to Canada before.", translation: "私は今までに一度もカナダに行ったことがありません。", answer: "been" },
+      { id: 10, rank: "C", unit: "unit1", word: "martial arts", meaning: "武道", sentence: "Judo and karate are traditional Japanese ( ).", translation: "柔道や空手は日本の伝統的な武道です。", answer: "martial arts" },
+      { id: 11, rank: "S", unit: "unit1", word: "have never been to", meaning: "…に行ったことがない", sentence: "I ( ) Kyoto yet.", translation: "私はまだ一度も京都に行ったことがありません。", answer: "have never been to" },
+      { id: 12, rank: "A", unit: "unit1", word: "pop", meaning: "大衆的な", sentence: "I like listening to ( ) music on the radio.", translation: "私はラジオでポップミュージックを聴くのが好きです。", answer: "pop" },
+      { id: 13, rank: "S", unit: "unit1", word: "have", meaning: "[完了形を作る助動詞]", sentence: "I ( ) just finished all of my homework.", translation: "私はちょうどすべての宿題を終えたところです。", answer: "have" },
+      { id: 14, rank: "S", unit: "unit1", word: "never", meaning: "今までに一度もしない", sentence: "I have ( ) seen such a beautiful bird before.", translation: "私は今までに一度もそんなに美しい鳥を見たことがありません。", answer: "never" },
+      { id: 15, rank: "B", unit: "unit1", word: "foreigner", meaning: "外国人", sentence: "Many ( ) visit Tokyo to see famous spots every year.", translation: "毎年多くの外国人が名所を見るために東京を訪れます。", answer: "foreigners" },
+      { id: 16, rank: "S", unit: "unit1", word: "ever", meaning: "今までに(疑問文)", sentence: "Have you ( ) visited Australia in winter?", translation: "あなたは今までに冬のオーストラリアを訪れたことがありますか。", answer: "ever" },
+      { id: 17, rank: "D", unit: "unit1", word: "Pokémon", meaning: "『ポケモン』", sentence: "( ) is loved by children all over the world.", translation: "『ポケモン』は世界中の子どもたちから愛されています。", answer: "Pokémon" },
+      { id: 18, rank: "S", unit: "unit1", word: "have been to", meaning: "…に行ったことがある", sentence: "I ( ) Hokkaido three times with my family.", translation: "私は家族と3回北海道に行ったことがあります。", answer: "have been to" },
+      { id: 19, rank: "S", unit: "unit1", word: "hear", meaning: "…を耳にする、聞いて知る", sentence: "Did you ( ) the surprising news this morning?", translation: "今朝その驚くべきニュースを耳にしましたか。", answer: "hear" },
+      { id: 20, rank: "B", unit: "unit1", word: "global", meaning: "全世界の、世界的な", sentence: "Global warming has become a serious ( ) problem.", translation: "地球温暖化は深刻な世界規模の問題になっています。", answer: "global" },
+      { id: 21, rank: "C", unit: "unit1", word: "genre", meaning: "ジャンル、部門、分野", sentence: "What ( ) of music do you like listening to?", translation: "あなたはどのジャンルの音楽を聴くのが好きですか。", answer: "genre" },
+      { id: 22, rank: "A", unit: "unit1", word: "adventure", meaning: "冒険、冒険心", sentence: "They went on an exciting ( ) in the deep forest.", translation: "彼らは深い森の中へワクワクする冒険に出かけました。", answer: "adventure" },
+      { id: 23, rank: "B", unit: "unit1", word: "adult", meaning: "おとな、成人", sentence: "This picture book is fun for both children and ( ).", translation: "この絵本は子どもと大人の両方にとって楽しいです。", answer: "adults" },
+      { id: 24, rank: "B", unit: "unit1", word: "quality", meaning: "質、品質、良質", sentence: "Japanese tea is famous for its high ( ).", translation: "日本茶はその高い品質で有名です。", answer: "quality" },
+      { id: 25, rank: "D", unit: "unit1", word: "animation", meaning: "アニメーション、動画", sentence: "Japanese ( ) is watched by people around the world.", translation: "日本のアニメーションは世界中の人々に見られています。", answer: "animation" },
+      { id: 26, rank: "A", unit: "unit1", word: "drawing", meaning: "絵、図、スケッチ", sentence: "She showed her wonderful ( ) to her friends.", translation: "彼女は自分の素敵な絵を友達に見せました。", answer: "drawings" },
+      { id: 27, rank: "B", unit: "unit1", word: "delicate", meaning: "上品な、優美な、繊細な", sentence: "This glass cup is very thin and ( ).", translation: "このガラスのコップはとても薄くて繊細です。", answer: "delicate" },
+      { id: 28, rank: "B", unit: "unit1", word: "addition", meaning: "足し算、付加", sentence: "In ( ) to English, he can speak Chinese well.", translation: "英語に加えて、彼は中国語も上手に話せます。", answer: "addition" },
+      { id: 29, rank: "B", unit: "unit1", word: "match", meaning: "…と調和する、匹敵する", sentence: "This red tie ( ) your jacket very well.", translation: "この赤いネクタイはあなたの上着によく調和しています。", answer: "matches" },
+      { id: 30, rank: "B", unit: "unit1", word: "positive", meaning: "肯定の、前向きな", sentence: "You should always keep a ( ) attitude.", translation: "常に前向きな態度を保つようにするべきです。", answer: "positive" },
+      { id: 31, rank: "B", unit: "unit1", word: "in addition", meaning: "加えて", sentence: "( ), we must buy some water and bread.", translation: "加えて、私たちは水とパンをいくらか買わなければなりません。", answer: "In addition" },
+      { id: 32, rank: "S", unit: "unit1", word: "go", meaning: "(ある状態)になる", sentence: "The milk will ( ) bad if you leave it on the table.", translation: "テーブルの上に置いておくと牛乳は悪くなってしまいます。", answer: "go" },
+      { id: 33, rank: "S", unit: "unit1", word: "make", meaning: "（人・もの）を…の状態にする", sentence: "Listening to music always ( ) me feel happy.", translation: "音楽を聴くことはいつも私を幸せな気分にします。", answer: "makes" },
+      { id: 34, rank: "S", unit: "unit1", word: "you", meaning: "人は（だれでも）[一般の人]", sentence: "Money cannot buy ( ) true happiness.", translation: "お金で人は本当の幸せを買うことはできません。", answer: "you" },
+      { id: 35, rank: "S", unit: "unit1", word: "more", meaning: "もっと", sentence: "Please tell me ( ) about your summer vacation.", translation: "あなたの夏休みについてもっと教えてください。", answer: "more" },
+      { id: 36, rank: "B", unit: "unit1", word: "ignore", meaning: "…を無視する", sentence: "You should not ( ) the safety rules at school.", translation: "学校の安全規則を無視するべきではありません。", answer: "ignore" },
+      { id: 37, rank: "B", unit: "unit1", word: "existence", meaning: "存在すること、生存", sentence: "Do you believe in the ( ) of alien life?", translation: "あなたは地球外生命体の存在を信じますか。", answer: "existence" },
+      { id: 38, rank: "A", unit: "unit1", word: "root", meaning: "根、起源", sentence: "Trees take in water through their ( ).", translation: "木は根を通して水を取り入れます。", answer: "roots" },
+      { id: 39, rank: "S", unit: "unit1", word: "drawn", meaning: "drawの過去分詞", sentence: "This beautiful portrait was ( ) by a young artist.", translation: "この美しい肖像画は若い芸術家によって描かれました。", answer: "drawn" },
+      { id: 40, rank: "B", unit: "unit1", word: "express", meaning: "…を表現する、言い表す", sentence: "She ( ) her true feelings in her diary.", translation: "彼女は日記の中で自分の本当の気持ちを表現しました。", answer: "expressed" },
+      { id: 41, rank: "B", unit: "unit1", word: "movement", meaning: "動き", sentence: "I watched the slow ( ) of the clouds in the sky.", translation: "私は空の雲のゆっくりとした動きを見つめました。", answer: "movement" },
+      { id: 42, rank: "C", unit: "unit1", word: "scroll", meaning: "掛け軸、巻物", sentence: "Traditional hanging ( ) are shown in the Japanese room.", translation: "その和室には伝統的な掛け軸が飾られています。", answer: "scrolls" },
+      { id: 43, rank: "B", unit: "unit1", word: "technique", meaning: "手法、テクニック", sentence: "He learned a new cooking ( ) from his grandmother.", translation: "彼は祖母から新しい料理の手法を学びました。", answer: "technique" },
+      { id: 44, rank: "B", unit: "unit1", word: "influence", meaning: "…に影響を及ぼす", sentence: "Her mother deeply ( ) her love of music.", translation: "母親は彼女の音楽への愛に深く影響を及ぼしました。", answer: "influenced" },
+      { id: 45, rank: "B", unit: "unit1", word: "advantage", meaning: "有利な点、強み", sentence: "Being able to speak two languages is a great ( ).", translation: "2つの言語を話せることは大きな強みです。", answer: "advantage" },
+      { id: 46, rank: "A", unit: "unit1", word: "taste", meaning: "味、味覚", sentence: "This cake has a sweet and delicious ( ).", translation: "このケーキは甘くて美味しい味がします。", answer: "taste" },
+      { id: 47, rank: "B", unit: "unit1", word: "link", meaning: "…をつなぐ、連結する", sentence: "The two islands are ( ) by a long bridge.", translation: "その2つの島は長い橋によって連結されています。", answer: "linked" },
+      { id: 48, rank: "B", unit: "unit1", word: "entirely", meaning: "全く、すっかり", sentence: "His interesting story is ( ) true.", translation: "彼の興味深い話は全くの事実です。", answer: "entirely" },
+      { id: 49, rank: "B", unit: "unit1", word: "It is said that", meaning: "…であると言われている", sentence: "( ) health is more important than wealth.", translation: "健康は富よりも大切であると言われています。", answer: "It is said that" },
+      { id: 50, rank: "B", unit: "unit1", word: "take advantage of", meaning: "…を利用する", sentence: "You should ( ) this great opportunity.", translation: "あなたはこの素晴らしい機会を利用するべきです。", answer: "take advantage of" },
+      { id: 51, rank: "S", unit: "unit1", word: "of", meaning: "[行為の主体] …が、…の", sentence: "It was very kind ( ) you to help me with the work.", translation: "その仕事を手伝ってくださったあなたのご親切に感謝します。", answer: "of" },
+      { id: 52, rank: "S", unit: "unit1", word: "said", meaning: "sayの過去分詞", sentence: "It is ( ) that Japanese green tea is good for health.", translation: "日本の緑茶は健康に良いと言われています。", answer: "said" },
+      { id: 53, rank: "S", unit: "unit1", word: "around", meaning: "あちこち、めぐって", sentence: "He walked ( ) the town to take some pictures.", translation: "彼は何枚か写真を撮るために町をあちこち歩きました。", answer: "around" },
+      { id: 54, rank: "S", unit: "unit1", word: "to", meaning: "[所属・付着] …に、…へ", sentence: "Welcome ( ) our new school festival!", translation: "私たちの新しい学校祭へようこそ！", answer: "to" },
+      { id: 55, rank: "S", unit: "unit2", word: "already", meaning: "すでに、もう", sentence: "I have ( ) finished reading this thick book.", translation: "私はすでにこの分厚い本を読み終えました。", answer: "already" },
+      { id: 56, rank: "A", unit: "unit2", word: "essay", meaning: "随筆、小論文", sentence: "We have to write a short ( ) on environmental protection.", translation: "私たちは環境保護についての短い小論文を書かなければなりません。", answer: "essay" },
+      { id: 57, rank: "S", unit: "unit2", word: "yet", meaning: "もう、すでに(疑問文)", sentence: "Have you finished your lunch ( )?", translation: "あなたはもう昼食を食べ終えましたか。", answer: "yet" },
+      { id: 58, rank: "B", unit: "unit2", word: "ethical", meaning: "道義にかなった、道徳的な", sentence: "Buying fair-trade products is an ( ) choice.", translation: "フェアトレード商品を買うことは道徳にかなった選択です。", answer: "ethical" },
+      { id: 59, rank: "A", unit: "unit2", word: "designer", meaning: "デザイナー、設計者", sentence: "She dreams of becoming a famous fashion ( ).", translation: "彼女は有名なファッションデザイナーになることを夢見ています。", answer: "designer" },
+      { id: 60, rank: "A", unit: "unit2", word: "interview", meaning: "…にインタビューする、面接", sentence: "The newspaper reporter will ( ) the player tomorrow.", translation: "新聞記者は明日その選手にインタビューする予定です。", answer: "interview" },
+      { id: 61, rank: "A", unit: "unit2", word: "message", meaning: "伝言、メッセージ", sentence: "Can I leave a telephone ( ) for Ms. Smith?", translation: "スミスさんに電話の伝言を残してもよろしいですか。", answer: "message" },
+      { id: 62, rank: "S", unit: "unit2", word: "sleeping", meaning: "眠る、寝ている", sentence: "The cat is peacefully ( ) on the sofa.", translation: "その猫はソファの上で穏やかに眠っています。", answer: "sleeping" },
+      { id: 63, rank: "S", unit: "unit2", word: "just", meaning: "たった今", sentence: "The express train has ( ) arrived at the platform.", translation: "急行電車がたった今ホームに到着したところです。", answer: "just" },
+      { id: 64, rank: "S", unit: "unit2", word: "read", meaning: "readの過去分詞", sentence: "I have already ( ) that comic book three times.", translation: "私はすでにその漫画本を3回読みました。", answer: "read" },
+      { id: 65, rank: "D", unit: "unit2", word: "accessories", meaning: "付属品、アクセサリー", sentence: "She bought some colorful hair ( ) at the shop.", translation: "彼女はその店でカラフルな髪のアクセサリーを買いました。", answer: "accessories" },
+      { id: 66, rank: "B", unit: "unit2", word: "recycled", meaning: "再生利用された、リサイクルした", sentence: "Plastic bottles are collected and ( ) into new things.", translation: "ペットボトルは集められて新しい物へとリサイクルされます。", answer: "recycled" },
+      { id: 67, rank: "B", unit: "unit2", word: "eco-friendly", meaning: "環境にやさしい", sentence: "Carrying your own bag is an ( ) habit.", translation: "マイバッグを持ち歩くことは環境にやさしい習慣です。", answer: "eco-friendly" },
+      { id: 68, rank: "S", unit: "unit2", word: "become", meaning: "becomeの過去分詞", sentence: "He has ( ) a very skilled soccer player.", translation: "彼はとても熟練したサッカー選手になりました。", answer: "become" },
+      { id: 69, rank: "B", unit: "unit2", word: "impact", meaning: "影響、衝撃", sentence: "Smartphones have a huge ( ) on our daily life.", translation: "スマートフォンは私たちの日常生活に強い影響を与えています。", answer: "impact" },
+      { id: 70, rank: "S", unit: "unit2", word: "since", meaning: "…以来", sentence: "We have been good friends ( ) we met in elementary school.", translation: "私たちは小学校で出会って以来ずっと良い友達です。", answer: "since" },
+      { id: 71, rank: "B", unit: "unit2", word: "introduced", meaning: "…を導入した", sentence: "The government ( ) a new educational system last year.", translation: "政府は昨年新しい教育制度を導入しました。", answer: "introduced" },
+      { id: 72, rank: "D", unit: "unit2", word: "SDGs", meaning: "持続可能な開発目標", sentence: "We are working together to achieve the ( ).", translation: "私たちは持続可能な開発目標（SDGs）を達成するために協力しています。", answer: "SDGs" },
+      { id: 73, rank: "S", unit: "unit2", word: "How long ...?", meaning: "どれくらい長く", sentence: "( ) have you studied English?", translation: "あなたはどれくらい長く英語を勉強していますか。", answer: "How long" },
+      { id: 74, rank: "A", unit: "unit2", word: "design", meaning: "…を設計する", sentence: "An architect will ( ) our new community center.", translation: "建築家が私たちの新しいコミュニティセンターを設計します。", answer: "design" },
+      { id: 75, rank: "S", unit: "unit2", word: "made", meaning: "makeの過去分詞", sentence: "This wooden chair was ( ) in Japan.", translation: "この木製の椅子は日本で作られました。", answer: "made" },
+      { id: 76, rank: "S", unit: "unit2", word: "on", meaning: "…に対して、…に", sentence: "Smoking has a bad effect ( ) your lungs.", translation: "喫煙は肺に対して悪い影響を及ぼします。", answer: "on" },
+      { id: 77, rank: "B", unit: "unit2", word: "morally", meaning: "道徳的に見て、倫理的に", sentence: "Cheating on a test is ( ) wrong.", translation: "テストでカンニングをすることは道徳的に見て間違っています。", answer: "morally" },
+      { id: 78, rank: "A", unit: "unit2", word: "clothing", meaning: "衣類、衣料品", sentence: "They donated warm winter ( ) to people in need.", translation: "彼らは困っている人々に暖かい冬の衣料品を寄付しました。", answer: "clothing" },
+      { id: 79, rank: "A", unit: "unit2", word: "company", meaning: "会社", sentence: "My brother works for a global IT ( ).", translation: "私の兄は世界的なIT会社で働いています。", answer: "company" },
+      { id: 80, rank: "B", unit: "unit2", word: "chemicals", meaning: "化学物質", sentence: "Scientists studied the effects of toxic ( ).", translation: "科学者たちは有害な化学物質の影響を研究しました。", answer: "chemicals" },
+      { id: 81, rank: "B", unit: "unit2", word: "leads", meaning: "（…に）通じる", sentence: "This small path ( ) to a beautiful waterfall.", translation: "この小さな小道は美しい滝へと通じています。", answer: "leads" },
+      { id: 82, rank: "S", unit: "unit2", word: "less", meaning: "もっと少ない", sentence: "We should produce ( ) garbage to protect nature.", translation: "自然を守るためにより少ないごみを出すべきです。", answer: "less" },
+      { id: 83, rank: "B", unit: "unit2", word: "negative", meaning: "否定的な、よくない", sentence: "Lack of sleep can cause ( ) effects on health.", translation: "睡眠不足は健康によくない影響を引き起こすことがあります。", answer: "negative" },
+      { id: 84, rank: "C", unit: "unit2", word: "animal-free", meaning: "動物性原料を含んでいない", sentence: "This cafe offers delicious ( ) cakes.", translation: "このカフェはおいしい動物性原料不使用のケーキを提供しています。", answer: "animal-free" },
+      { id: 85, rank: "B", unit: "unit2", word: "include", meaning: "…を含む、含める", sentence: "Does the total bill ( ) the service fee?", translation: "合計の請求額にはサービス料が含まれていますか。", answer: "include" },
+      { id: 86, rank: "C", unit: "unit2", word: "vegan", meaning: "絶対菜食主義者（ヴィーガン）", sentence: "He is a strict ( ) and never eats meat or dairy.", translation: "彼は厳格な絶対菜食主義者（ヴィーガン）で、肉や乳製品を決して食べません。", answer: "vegan" },
+      { id: 87, rank: "A", unit: "unit2", word: "leather", meaning: "革、なめし革", sentence: "She likes using a bag made of genuine ( ).", translation: "彼女は本物の革で作られたバッグを使うのが好きです。", answer: "leather" },
+      { id: 88, rank: "B", unit: "unit2", word: "avoid", meaning: "…を避ける、よける", sentence: "You should ( ) eating too much sugar before bed.", translation: "寝る前に過剰な砂糖を食べるのは避けるべきです。", answer: "avoid" },
+      { id: 89, rank: "D", unit: "unit2", word: "wool", meaning: "羊毛、ウール", sentence: "This warm winter scarf is made of Australian ( ).", translation: "この暖かい冬のマフラーはオーストラリアの羊毛で作られています。", answer: "wool" },
+      { id: 90, rank: "D", unit: "unit2", word: "fur", meaning: "毛皮、毛皮製品", sentence: "Many brands stop using animal ( ) for fashion.", translation: "多くのブランドがファッションのために動物の毛皮を使うのをやめています。", answer: "fur" },
+      { id: 91, rank: "A", unit: "unit2", word: "small", meaning: "少ない、わずかな", sentence: "Only a ( ) amount of rain fell yesterday.", translation: "昨日はほんのわずかな量の雨しか降りませんでした。", answer: "small" },
+      { id: 92, rank: "S", unit: "unit2", word: "use", meaning: "使用、使うこと", sentence: "The proper ( ) of tools is taught in craft class.", translation: "道具の適切な使用方法が図工の授業で教えられます。", answer: "use" },
+      { id: 93, rank: "S", unit: "unit2", word: "Many", meaning: "多数（の人・もの）", sentence: "( ) of the students enjoyed the school trip.", translation: "生徒たちの多数が修学旅行を楽しみました。", answer: "Many" },
+      { id: 94, rank: "B", unit: "unit2", word: "moreover", meaning: "なおそのうえに、さらに", sentence: "The bike is fast; ( ), it is very safe.", translation: "その自転車は速く、なおそのうえにとても安全です。", answer: "moreover" },
+      { id: 95, rank: "B", unit: "unit2", word: "workers", meaning: "働く人、労働者", sentence: "The company protects the safety of factory ( ).", translation: "その会社は工場の働く人たちの安全を守っています。", answer: "workers" },
+      { id: 96, rank: "B", unit: "unit2", word: "developing", meaning: "発展途上の", sentence: "They support educational projects in ( ) nations.", translation: "彼らは発展途上国での教育プロジェクトを支援しています。", answer: "developing" },
+      { id: 97, rank: "B", unit: "unit2", word: "conditions", meaning: "状況、労働条件", sentence: "Workers demanded better working ( ) from the boss.", translation: "労働者たちは雇用主により良い労働状況を求めました。", answer: "conditions" },
+      { id: 98, rank: "B", unit: "unit2", word: "wage", meaning: "賃金、給料", sentence: "The workers negotiated for a minimum ( ).", translation: "労働者たちは最低賃金について交渉しました。", answer: "wage" },
+      { id: 99, rank: "A", unit: "unit2", word: "working", meaning: "働く、労働の", sentence: "They are making efforts to improve the ( ) environment.", translation: "彼らは働く環境を改善するための努力をしています。", answer: "working" },
+      { id: 100, rank: "B", unit: "unit2", word: "fair", meaning: "公平な、相当の", sentence: "The referee made a ( ) judgment in the game.", translation: "審判はその試合で公平な判定を下しました。", answer: "fair" },
+      { id: 101, rank: "B", unit: "unit2", word: "prohibit", meaning: "…を禁止する", sentence: "The new regulations strictly ( ) smoking in public parks.", translation: "新しい規則は公共の公園での喫煙を厳しく禁止しています。", answer: "prohibit" },
+      { id: 102, rank: "B", unit: "unit2", word: "labor", meaning: "労働", sentence: "Child ( ) must be abolished all over the world.", translation: "児童労働は世界中で撤廃されなければなりません。", answer: "labor" },
+      { id: 103, rank: "B", unit: "unit2", word: "responsible", meaning: "責任がある", sentence: "Parents are ( ) for the safety of their young children.", translation: "親は幼い子どもの安全に責任があります。", answer: "responsible" },
+      { id: 104, rank: "A", unit: "unit2", word: "low", meaning: "低い、小さい", sentence: "They sold fresh vegetables at a very ( ) price.", translation: "彼らはとても低い価格で新鮮な野菜を販売しました。", answer: "low" },
+      { id: 105, rank: "A", unit: "unit2", word: "hours", meaning: "勤務時間、開館時間", sentence: "The museum is open during regular business ( ).", translation: "博物館は通常の開館時間の間に開いています。", answer: "hours" },
+      { id: 106, rank: "B", unit: "unit2", word: "planet", meaning: "地球", sentence: "We have to take care of our precious ( ) Earth.", translation: "私たちはかけがえのない地球を大切にしなければなりません。", answer: "planet" },
+      { id: 107, rank: "B", unit: "unit3", word: "danger", meaning: "危険（性）", sentence: "The rare species was in serious ( ) of disappearing.", translation: "その希少種は姿を消す重大な危険（性）にありました。", answer: "danger" },
+      { id: 108, rank: "B", unit: "unit3", word: "extinction", meaning: "絶滅", sentence: "Many plants and animals are threatened with ( ).", translation: "多くの動植物が絶滅の危機に瀕しています。", answer: "extinction" },
+      { id: 109, rank: "B", unit: "unit3", word: "challenges", meaning: "難問、課題", sentence: "Climate change is one of the biggest ( ) today.", translation: "気候変動は今日における最大の難問の1つです。", answer: "challenges" },
+      { id: 110, rank: "B", unit: "unit3", word: "human", meaning: "人間の、人間的な", sentence: "Pollution is caused mainly by ( ) actions.", translation: "汚染は主に人間の行動によって引き起こされます。", answer: "human" },
+      { id: 111, rank: "B", unit: "unit3", word: "endangered", meaning: "絶滅の危機にさらされている", sentence: "The giant panda is an ( ) animal in the wild.", translation: "ジャイアントパンダは野生における絶滅の危機にさらされている動物です。", answer: "endangered" },
+      { id: 112, rank: "B", unit: "unit3", word: "survive", meaning: "生き残る", sentence: "Wild animals must find food to ( ) the winter.", translation: "野生動物は冬を生き残るために餌を見つけなければなりません。", answer: "survive" },
+      { id: 113, rank: "S", unit: "unit3", word: "trouble", meaning: "困難、苦労", sentence: "She had great ( ) understanding the math problem.", translation: "彼女はその数学の問題を理解するのに大きな困難（苦労）がありました。", answer: "trouble" },
+      { id: 114, rank: "B", unit: "unit3", word: "be in danger of", meaning: "…の危険にさらされている", sentence: "The polar bear may ( ) disappearing forever.", translation: "ホッキョクグマは永遠に姿を消す危険にさらされているかもしれません。", answer: "be in danger of" },
+      { id: 115, rank: "S", unit: "unit3", word: "be", meaning: "（…に）いる、ある", sentence: "It is wonderful to ( ) together with good friends.", translation: "良い友達と一緒にいることは素晴らしいです。", answer: "be" },
+      { id: 116, rank: "S", unit: "unit3", word: "change", meaning: "変化", sentence: "We observed a gradual ( ) in the autumn leaves.", translation: "私たちは秋の木の葉の緩やかな変化を観察しました。", answer: "change" },
+      { id: 117, rank: "S", unit: "unit3", word: "for", meaning: "（人）が（～することは）", sentence: "It is important ( ) students to read good books.", translation: "生徒が良い本を読むことは大切です。", answer: "for" },
+      { id: 118, rank: "S", unit: "unit3", word: "or", meaning: "そうしなければ", sentence: "Put on your warm coat, ( ) you will catch a cold.", translation: "暖かいコートを着なさい、そうしなければ風邪をひきますよ。", answer: "or" },
+      { id: 119, rank: "D", unit: "unit3", word: "cheetah", meaning: "チーター", sentence: "The ( ) can run faster than any other land animal.", translation: "チーターは陸上の他のどの動物よりも速く走ることができます。", answer: "cheetah" },
+      { id: 120, rank: "D", unit: "unit3", word: "sea otter", meaning: "ラッコ", sentence: "We watched a playful ( ) swimming in the sea.", translation: "私たちは海で泳ぐ陽気なラッコを観察しました。", answer: "sea otter" },
+      { id: 121, rank: "B", unit: "unit3", word: "article", meaning: "記事", sentence: "I read a fascinating newspaper ( ) about space exploration.", translation: "私は宇宙探査に関する魅力的な新聞記事を読みました。", answer: "article" },
+      { id: 122, rank: "D", unit: "unit3", word: "IUCN", meaning: "国際自然保護連合", sentence: "The ( ) updates the list of endangered species every year.", translation: "国際自然保護連合（IUCN）は絶滅危惧種のリストを毎年更新しています。", answer: "IUCN" },
+      { id: 123, rank: "D", unit: "unit3", word: "Red List", meaning: "レッドリスト", sentence: "The Japanese crested ibis is registered on the ( ).", translation: "日本のトキはレッドリストに登録されています。", answer: "Red List" },
+      { id: 124, rank: "A", unit: "unit3", word: "heard of", meaning: "…について聞いた", sentence: "Have you ever ( ) that mysterious story?", translation: "あなたはその不思議な話について聞いたことがありますか。", answer: "heard of" },
+      { id: 125, rank: "S", unit: "unit3", word: "heard", meaning: "hearの過去分詞", sentence: "I have not ( ) anything about the plan yet.", translation: "私はその計画についてまだ何も聞いていません。", answer: "heard" },
+      { id: 126, rank: "A", unit: "unit3", word: "list", meaning: "表、リスト", sentence: "She wrote down all the names on the ( ).", translation: "彼女はすべての名前をそのリスト（表）に書き留めました。", answer: "list" },
+      { id: 127, rank: "B", unit: "unit3", word: "population", meaning: "人口、個体数", sentence: "The tiger ( ) in this area is dropping fast.", translation: "この地域のトラの個体数は急速に減少しています。", answer: "population" },
+      { id: 128, rank: "B", unit: "unit3", word: "rapidly", meaning: "速く、急速に", sentence: "Technology has developed very ( ) recently.", translation: "科学技術は近年とても急速に発展しました。", answer: "rapidly" },
+      { id: 129, rank: "A", unit: "unit3", word: "beginning", meaning: "最初の部分、初め", sentence: "He left for school at the ( ) of April.", translation: "彼らは4月の初めに学校へ出発しました。", answer: "beginning" },
+      { id: 130, rank: "B", unit: "unit3", word: "century", meaning: "世紀、100年", sentence: "The castle was built in the sixteenth ( ).", translation: "その城は16世紀に建てられました。", answer: "century" },
+      { id: 131, rank: "A", unit: "unit3", word: "shocked", meaning: "衝撃を与えた", sentence: "The bad news deeply ( ) everyone in the room.", translation: "その悪い知らせは部屋にいた皆に衝撃を与えました。", answer: "shocked" },
+      { id: 132, rank: "A", unit: "unit3", word: "safely", meaning: "安全に", sentence: "The climbers returned down the mountain ( ).", translation: "登山者たちは安全に山を下りて戻りました。", answer: "safely" },
+      { id: 133, rank: "B", unit: "unit3", word: "overhunting", meaning: "乱獲", sentence: "Many sea creatures died due to ( ).", translation: "乱獲が原因で多くの海洋生物が命を落としました。", answer: "overhunting" },
+      { id: 134, rank: "A", unit: "unit3", word: "oil", meaning: "石油", sentence: "A lot of countries depend on imported crude ( ).", translation: "多くの国が輸入された原油に頼っています。", answer: "oil" },
+      { id: 135, rank: "C", unit: "unit3", word: "spill", meaning: "流出、こぼれ", sentence: "The factory caused an accidental chemical ( ).", translation: "その工場は偶発的な化学物質の流出事故を引き起こしました。", answer: "spill" },
+      { id: 136, rank: "A", unit: "unit3", word: "hunting", meaning: "狩り、捕獲", sentence: "Strict laws were passed against illegal whale ( ).", translation: "違法なクジラの捕獲に対して厳しい法律が制定されました。", answer: "hunting" },
+      { id: 137, rank: "D", unit: "unit3", word: "killer whale", meaning: "シャチ", sentence: "The ( ) is one of the largest predators in the ocean.", translation: "シャチは海洋で最も大きな捕食動物の1つです。", answer: "killer whale" },
+      { id: 138, rank: "B", unit: "unit3", word: "the Northern Pacific Ocean", meaning: "北太平洋", sentence: "Many migrating whales live in ( ).", translation: "回遊する多くのクジラが北太平洋に生息しています。", answer: "the Northern Pacific Ocean" },
+      { id: 139, rank: "S", unit: "unit3", word: "as a result", meaning: "結果として", sentence: "He studied hard, and ( ), passed the difficult exam.", translation: "彼は一生懸命勉強し、結果として難関試験に合格しました。", answer: "as a result" },
+      { id: 140, rank: "S", unit: "unit3", word: "The", meaning: "…というもの", sentence: "( ) dog is known as a loyal companion.", translation: "犬というものは忠実な仲間として知られています。", answer: "The" },
+      { id: 141, rank: "S", unit: "unit3", word: "let", meaning: "（人）に…させる", sentence: "My mother didn't ( ) me play games late at night.", translation: "母は夜遅くに私にゲームをさせませんでした。", answer: "let" },
+      { id: 142, rank: "S", unit: "unit3", word: "from", meaning: "…から", sentence: "Our school library opens ( ) Monday to Friday.", translation: "私たちの学校の図書館は月曜日から金曜日まで開いています。", answer: "from" },
+      { id: 143, rank: "S", unit: "unit3", word: "to", meaning: "…まで", sentence: "He walked all the way from the station ( ) his house.", translation: "彼は駅から自宅までずっと歩きました。", answer: "to" },
+      { id: 144, rank: "S", unit: "unit3", word: "help", meaning: "手伝う", sentence: "Could you please ( ) me carry this heavy luggage?", translation: "私がこの重い荷物を運ぶのを手伝っていただけますか。", answer: "help" },
+      { id: 145, rank: "B", unit: "unit3", word: "end", meaning: "…を終える", sentence: "The teacher decided to ( ) the lesson five minutes early.", translation: "先生は授業を5分早く終えることに決めました。", answer: "end" },
+      { id: 146, rank: "B", unit: "unit3", word: "increase", meaning: "増加する", sentence: "The number of foreign tourists will continue to ( ).", translation: "外国人観光客の数は今後も増加し続けるでしょう。", answer: "increase" },
+      { id: 147, rank: "A", unit: "unit3", word: "native", meaning: "固有の、原産の", sentence: "The giant panda is ( ) to central China.", translation: "ジャイアントパンダは中国中部の原産です。", answer: "native" },
+      { id: 148, rank: "C", unit: "unit3", word: "logging", meaning: "伐採", sentence: "Heavy ( ) destroyed a large area of tropical rain forest.", translation: "過剰な伐採が熱帯雨林の広大な地域を破壊しました。", answer: "logging" },
+      { id: 149, rank: "B", unit: "unit3", word: "traffic accidents", meaning: "交通事故", sentence: "Please drive carefully to prevent serious ( ).", translation: "重大な交通事故を防ぐために注意して運転してください。", answer: "traffic accidents" },
+      { id: 150, rank: "B", unit: "unit3", word: "research", meaning: "研究、調査", sentence: "Scientists are conducting important ( ) on cancer cures.", translation: "科学者たちはがんの治療法に関する重要な研究を行っています。", answer: "research" },
+      { id: 151, rank: "B", unit: "unit3", word: "categorized", meaning: "分類された", sentence: "Books in the library are ( ) by their subjects.", translation: "図書館の本は主題によって分類されています。", answer: "categorized" },
+      { id: 152, rank: "B", unit: "unit3", word: "critically", meaning: "危機的な状態で", sentence: "The patient remains in ( ) serious condition.", translation: "患者は危機的な状態のままです。", answer: "critically" },
+      { id: 153, rank: "B", unit: "unit3", word: "citizen", meaning: "市民", sentence: "Every local ( ) has the right to vote.", translation: "すべての地域市民には投票する権利があります。", answer: "citizen" },
+      { id: 154, rank: "B", unit: "unit3", word: "ecosystem", meaning: "生態系", sentence: "Protecting the ocean is vital for the marine ( ).", translation: "海を守ることは海洋生態系にとって不可欠です。", answer: "ecosystem" },
+      { id: 155, rank: "B", unit: "unit3", word: "human beings", meaning: "人間（全体）", sentence: "All ( ) have the responsibility to care for the Earth.", translation: "すべての人間には地球を大切にする責任があります。", answer: "human beings" },
+      { id: 156, rank: "B", unit: "unit3", word: "related", meaning: "関係がある", sentence: "Stress is closely ( ) to high blood pressure.", translation: "ストレスは高血圧と密接に関係しています。", answer: "related" },
+      { id: 157, rank: "B", unit: "unit3", word: "action", meaning: "行動、アクション", sentence: "We must take immediate ( ) to reduce global pollution.", translation: "私たちは地球規模の汚染を減らすために迅速な行動を起こさねばなりません。", answer: "action" },
+      { id: 158, rank: "B", unit: "unit3", word: "decrease", meaning: "減少", sentence: "There was a noticeable ( ) in average rainfall last year.", translation: "昨年は平均降水量において顕著な減少が見られました。", answer: "decrease" },
+      { id: 159, rank: "B", unit: "unit3", word: "breed", meaning: "繁殖させる、飼育する", sentence: "Specialists are trying to ( ) endangered birds in captivity.", translation: "専門家たちは飼育下で絶滅危惧種の鳥を繁殖させようと試みています。", answer: "breed" },
+      { id: 160, rank: "B", unit: "unit3", word: "released", meaning: "放された", sentence: "The rescued sea turtle was ( ) back into the sea.", translation: "救助されたウミガメは海へと放されました。", answer: "released" },
+      { id: 161, rank: "B", unit: "unit3", word: "reached", meaning: "達した、到着した", sentence: "The mountain climbers finally ( ) the top before dark.", translation: "登山者たちは暗くなる前にようやく頂上に達しました。", answer: "reached" },
+      { id: 162, rank: "A", unit: "unit3", word: "Nowadays", meaning: "今日では、このごろは", sentence: "( ), almost every teenager owns a personal smartphone.", translation: "今日では、ほぼすべての十代の若者が個人のスマートフォンを持っています。", answer: "Nowadays" },
+      { id: 163, rank: "A", unit: "unit3", word: "continue", meaning: "続く、続ける", sentence: "The heavy rain will probably ( ) all night long.", translation: "激しい雨はおそらく一晩中降り続けるでしょう。", answer: "continue" },
+      { id: 164, rank: "D", unit: "unit3", word: "crested ibis", meaning: "トキ", sentence: "The Japanese ( ) was once thought to be completely extinct.", translation: "日本のトキはかつて完全に絶滅したと考えられていました。", answer: "crested ibis" },
+      { id: 165, rank: "A", unit: "unit3", word: "items", meaning: "品目", sentence: "How many ( ) are listed on your shopping checklist?", translation: "あなたの買い物のチェックリストには何品目載っていますか。", answer: "items" },
+      { id: 166, rank: "S", unit: "unit3", word: "piece", meaning: "断片、1切れ", sentence: "Can I have a ( ) of freshly baked apple pie?", translation: "焼きたてのアップルパイを1切れいただけますか。", answer: "piece" },
+      { id: 167, rank: "B", unit: "unit3", word: "cloth", meaning: "布、服地", sentence: "She wrapped the fragile teapot in a soft ( ).", translation: "彼女は壊れやすい急須を柔らかい布で包みました。", answer: "cloth" },
+      { id: 168, rank: "B", unit: "unit3", word: "wrap", meaning: "…を包む", sentence: "Please ( ) this gift box in pretty paper.", translation: "この贈り物用の箱をきれいな紙で包んでください。", answer: "wrap" },
+      { id: 169, rank: "B", unit: "unit3", word: "fold", meaning: "…を折る、折りたたむ", sentence: "He taught me how to ( ) an origami crane.", translation: "彼は私に折り紙のツルを折る方法を教えてくれました。", answer: "fold" },
+      { id: 170, rank: "A", unit: "unit3", word: "convenient", meaning: "便利な", sentence: "Convenience stores are extremely ( ) because they never close.", translation: "コンビニは決して閉まらないので非常に便利です。", answer: "convenient" },
+      { id: 171, rank: "A", unit: "unit3", word: "instead", meaning: "その代わりに", sentence: "He drank green tea ( ) of drinking coffee this morning.", translation: "彼は今朝、コーヒーを飲む代わりに緑茶を飲みました。", answer: "instead" },
+      { id: 172, rank: "B", unit: "unit3", word: "resources", meaning: "資源", sentence: "We should conserve natural energy ( ) like water and oil.", translation: "私たちは水や石油のような天然エネルギー資源を大切に保存するべきです。", answer: "resources" },
+      { id: 173, rank: "S", unit: "unit3", word: "a piece of", meaning: "1つの…", sentence: "Would you like ( ) cheese with your bread?", translation: "パンと一緒に1切れのチーズはいかがですか。", answer: "a piece of" },
+      { id: 174, rank: "A", unit: "unit3", word: "fold up", meaning: "…を折りたたむ", sentence: "Please ( ) the clothes ( ) and put them into the drawer.", translation: "服をきちんと折りたたんで引き出しにしまってください。", answer: "fold up" },
+      { id: 175, rank: "B", unit: "unit3", word: "instead of", meaning: "…のかわりに", sentence: "She decided to take the subway ( ) taking a taxi.", translation: "彼女はタクシーに乗る代わりに地下鉄に乗ることに決めました。", answer: "instead of" },
+      { id: 176, rank: "A", unit: "unit3", word: "square", meaning: "正方形の", sentence: "A chess board is shaped like a large ( ).", translation: "チェス盤は大きな正方形の形をしています。", answer: "square" },
+      { id: 177, rank: "D", unit: "unit3", word: "up", meaning: "しっかりと", sentence: "Stand ( ) straight and look into the camera, please.", translation: "背筋をしっかりと伸ばして立ち、カメラを見てください。", answer: "up" },
+      { id: 178, rank: "A", unit: "unit3", word: "waste", meaning: "…をむだに使う", sentence: "Don't ( ) valuable electricity by leaving the lights on.", translation: "照明をつけっぱなしにして貴重な電力をむだに使ってはいけません。", answer: "waste" },
+      { id: 179, rank: "C", unit: "Let's Read 1", word: "lullaby", meaning: "子守歌", sentence: "The grandmother sang a soothing ( ) to the baby.", translation: "祖母は赤ちゃんに心地よい子守歌を歌いました。", answer: "lullaby" },
+      { id: 180, rank: "S", unit: "Let's Read 1", word: "road", meaning: "道", sentence: "Be careful when walking along this dark mountain ( ).", translation: "この暗い山道を歩くときは気をつけてください。", answer: "road" },
+      { id: 181, rank: "A", unit: "Let's Read 1", word: "through", meaning: "[時間] …の間中", sentence: "She stayed awake and read books ( ) the night.", translation: "彼女は夜の間中ずっと起きて本を読みました。", answer: "through" },
+      { id: 182, rank: "B", unit: "Let's Read 1", word: "sweet", meaning: "心地よい、やさしい", sentence: "The rose has a very ( ) and pleasant scent.", translation: "そのバラはとても心地よい甘い香りがします。", answer: "sweet" },
+      { id: 183, rank: "A", unit: "Let's Read 1", word: "Some", meaning: "約、およそ", sentence: "( ) fifty students attended the English club meeting.", translation: "およそ50人の生徒が英語部のミーティングに出席しました。", answer: "Some" },
+      { id: 184, rank: "A", unit: "Let's Read 1", word: "bomb", meaning: "爆弾", sentence: "The museum displays fragments of a destroyed historical ( ).", translation: "その博物館には破壊された歴史的な爆弾の破片が展示されています。", answer: "bomb" },
+      { id: 185, rank: "S", unit: "Let's Read 1", word: "lost", meaning: "loseの過去分詞", sentence: "He had ( ) his keys and could not enter the house.", translation: "彼は鍵をなくしてしまって、家に入ることができませんでした。", answer: "lost" },
+      { id: 186, rank: "A", unit: "Let's Read 1", word: "injure", meaning: "…を傷つける", sentence: "The fallen glass may ( ) someone walking barefoot.", translation: "割れて落ちたガラスは、裸足で歩いている人を傷つけるかもしれません。", answer: "injure" },
+      { id: 187, rank: "A", unit: "Let's Read 1", word: "shade", meaning: "陰", sentence: "We rested happily under the cool ( ) of the tall tree.", translation: "私たちは高い木の涼しい陰の下で楽しく休みました。", answer: "shade" },
+      { id: 188, rank: "S", unit: "Let's Read 1", word: "dead", meaning: "死んだ", sentence: "The old flower plant was completely ( ) and dry.", translation: "その古い草花は完全に枯れて乾いていました。", answer: "dead" },
+      { id: 189, rank: "S", unit: "Let's Read 1", word: "weak", meaning: "弱い、かすかな", sentence: "He felt very ( ) after catching a high fever.", translation: "彼は高熱を出したあと、とても体が弱く感じました。", answer: "weak" },
+      { id: 190, rank: "D", unit: "Let's Read 1", word: "mommy", meaning: "お母ちゃん", sentence: "The little girl cried softly and called for her ( ).", translation: "その幼い女の子は静かに泣いてお母ちゃんを呼びました。", answer: "mommy" },
+      { id: 191, rank: "S", unit: "Let's Read 1", word: "cry", meaning: "泣く", sentence: "The frightened baby began to ( ) loudly in the room.", translation: "怖がった赤ちゃんは部屋の中で大声で泣き始めました。", answer: "cry" },
+      { id: 192, rank: "S", unit: "Let's Read 1", word: "held", meaning: "抱いた", sentence: "The mother gently ( ) her sleeping child in her arms.", translation: "母親は眠っている子どもを腕の中に優しく抱きました。", answer: "held" },
+      { id: 193, rank: "S", unit: "Let's Read 1", word: "hold", meaning: "…を抱く、押さえる", sentence: "Could you please ( ) the door open for a moment?", translation: "少しの間ドアを押さえておいていただけますか。", answer: "hold" },
+      { id: 194, rank: "S", unit: "Let's Read 1", word: "real", meaning: "本物の、本当の", sentence: "Is this famous diamond ( ) or just fake glass?", translation: "この有名なダイヤモンドは本物ですか、それともただの偽ガラスですか。", answer: "real" },
+      { id: 195, rank: "S", unit: "Let's Read 1", word: "fall", meaning: "落ちる、降る", sentence: "Autumn leaves slowly ( ) from the branches to the ground.", translation: "秋の木の葉が枝から地面へとゆっくり落ちます。", answer: "fall" },
+      { id: 196, rank: "S", unit: "Let's Read 1", word: "life", meaning: "生命、命", sentence: "Water is absolutely essential for all living ( ) on Earth.", translation: "水は地球上のすべての生命にとって絶対に不可欠です。", answer: "life" },
+      { id: 197, rank: "A", unit: "Let's Read 1", word: "burn", meaning: "やけど", sentence: "The hot water caused a serious ( ) on his hand.", translation: "熱湯が彼の手の重大なやけどを引き起こしました。", answer: "burn" },
+      { id: 198, rank: "S", unit: "Let's Read 1", word: "rest", meaning: "休む、眠る", sentence: "You look tired, so you should take a good ( ) today.", translation: "疲れているようだから、今日はしっかり休むべきです。", answer: "rest" },
+      { id: 199, rank: "A", unit: "Let's Read 1", word: "right", meaning: "健康な、調子がいい", sentence: "Eat healthy meals and stay ( ) and fit.", translation: "健康的な食事をとって、健康な調子を保ちましょう。", answer: "right" },
+      { id: 200, rank: "B", unit: "Let's Read 1", word: "tightly", meaning: "しっかりと", sentence: "She held her mother's warm hand ( ) in the crowd.", translation: "彼女は人混みの中で母親の温かい手をしっかりと握りました。", answer: "tightly" },
+      { id: 201, rank: "B", unit: "Let's Read 1", word: "while", meaning: "しばらくの間", sentence: "Let's sit on the bench and talk for a short ( ).", translation: "ベンチに座ってしばらくの間話しましょう。", answer: "while" },
+      { id: 202, rank: "A", unit: "Let's Read 1", word: "quietly", meaning: "静かに", sentence: "The students entered the quiet library ( ).", translation: "生徒たちは静かに図書室に入りました。", answer: "quietly" },
+      { id: 203, rank: "S", unit: "Let's Read 1", word: "After a while", meaning: "しばらくして", sentence: "( ), the heavy rain stopped and the sun came out.", translation: "しばらくして激しい雨がやみ、太陽が出てきました。", answer: "After a while" },
+      { id: 204, rank: "S", unit: "Let's Read 1", word: "stop", meaning: "…をとめる、やめる", sentence: "The driver managed to ( ) the bus just in time.", translation: "運転手はちょうど間に合ってバスをとめることができました。", answer: "stop" },
+      { id: 205, rank: "S", unit: "Let's Read 1", word: "move", meaning: "動く、引っ越す", sentence: "We will pack our bags and ( ) to a new house tomorrow.", translation: "私たちは明日荷物を詰めて新しい家へ引っ越す予定です。", answer: "move" },
+      { id: 206, rank: "A", unit: "Let's Read 1", word: "nuclear", meaning: "核の", sentence: "Many nations advocate for a world free of ( ) power.", translation: "多くの国が核のない世界を提唱しています。", answer: "nuclear" },
+      { id: 207, rank: "B", unit: "Let's Read 1", word: "peace", meaning: "平和", sentence: "We all pray for enduring world ( ) and prosperity.", translation: "私たちは皆、永続的な世界平和と繁栄を祈っています。", answer: "peace" },
+      { id: 208, rank: "S", unit: "Let's Read 1", word: "bright", meaning: "明るい", sentence: "The morning sun was shining ( ) in the blue sky.", translation: "朝の太陽が青空の中で明るく輝いていました。", answer: "bright" },
+      { id: 209, rank: "B", unit: "Let's Read 1", word: "cloudless", meaning: "雲のない", sentence: "It was a completely ( ) day with no rain in sight.", translation: "雨の気配がまったくない、完全に雲のない晴天でした。", answer: "cloudless" },
+      { id: 210, rank: "B", unit: "Let's Read 1", word: "death", meaning: "死", sentence: "His sudden ( ) was a heartbreaking tragedy for the town.", translation: "彼の突然の死は町にとって胸の張り裂けるような悲劇でした。", answer: "death" },
+      { id: 211, rank: "B", unit: "Let's Read 1", word: "sky", meaning: "空", sentence: "Look at the bright stars twinkling in the night ( ).", translation: "夜空の中でキラキラ輝く明るい星を見てください。", answer: "sky" },
+      { id: 212, rank: "B", unit: "Let's Read 1", word: "the U.S.", meaning: "アメリカ合衆国", sentence: "She traveled across ( ) from New York to California.", translation: "彼女はアメリカ合衆国をニューヨークからカリフォルニアまで旅しました。", answer: "the U.S." },
+      { id: 213, rank: "B", unit: "Let's Read 1", word: "president", meaning: "大統領", sentence: "The ( ) gave a memorable speech on international unity.", translation: "大統領は国際的団結についての心に残る演説を行いました。", answer: "president" },
+      { id: 214, rank: "B", unit: "Let's Read 1", word: "meant", meaning: "meanの過去分詞", sentence: "I wonder what he really ( ) by that ambiguous sentence.", translation: "彼があの文言で本当は何を意味していたのか気になります。", answer: "meant" },
+      { id: 215, rank: "S", unit: "Let's Read 1", word: "war", meaning: "戦争", sentence: "Peaceful nations hope there will never be another world ( ).", translation: "平和な国々は二度と世界大戦が起きないことを望んでいます。", answer: "war" },
+      { id: 216, rank: "A", unit: "Let's Read 1", word: "courage", meaning: "勇気", sentence: "It takes great ( ) to speak the truth in public.", translation: "人前で真実を話すことには大きな勇気が必要です。", answer: "courage" },
+      { id: 217, rank: "C", unit: "Let's Read 1", word: "pursue", meaning: "…を追い求める", sentence: "Young students are encouraged to ( ) their creative dreams.", translation: "若い生徒たちは創造的な夢を追い求めるよう励まされます。", answer: "pursue" },
+      { id: 218, rank: "A", unit: "Let's Read 1", word: "worth", meaning: "…の価値がある", sentence: "Visiting the historic museum is definitely ( ) the trip.", translation: "その歴史的な博物館を訪れることは間違いなくその旅の価値があります。", answer: "worth" },
+      { id: 219, rank: "C", unit: "Let's Read 1", word: "extend", meaning: "…を広げる", sentence: "The city plans to ( ) the train lines to nearby suburbs.", translation: "市は電車路線を近くの郊外へ広げることを計画しています。", answer: "extend" },
+      { id: 220, rank: "B", unit: "Let's Read 1", word: "nuclear weapons", meaning: "核兵器", sentence: "The treaty aims to eliminate all dangerous ( ) globally.", translation: "その条約は危険な核兵器を世界規模で全廃することを目指しています。", answer: "nuclear weapons" },
+      { id: 221, rank: "B", unit: "Let's Read 1", word: "sitting", meaning: "現職の", sentence: "The ( ) governor addressed the urgent environmental crisis.", translation: "現職の知事が緊急の環境危機について演説しました。", answer: "sitting" },
+      { id: 222, rank: "B", unit: "Let's Read 1", word: "word", meaning: "言葉、単語", sentence: "Can you explain the exact meaning of this unfamiliar ( )?", translation: "あなたはこの聞き慣れない言葉の正確な意味を説明できますか。", answer: "word" },
+      { id: 223, rank: "S", unit: "Let's Read 1", word: "himself", meaning: "彼自身", sentence: "The boy solved the complicated puzzle all by ( ).", translation: "その少年は独力でパズルを解きました。", answer: "himself" },
+      { id: 224, rank: "S", unit: "Let's Read 1", word: "every", meaning: "すべての、毎～", sentence: "She reads English news articles ( ) morning before school.", translation: "彼女は毎朝登校する前に英語のニュース記事を読みます。", answer: "every" },
+      { id: 225, rank: "B", unit: "unit4", word: "prepared", meaning: "用意ができている", sentence: "The rescue team was fully ( ) for any bad situation.", translation: "救助チームはいかなる悪状況に対しても十分に用意ができていました。", answer: "prepared" },
+      { id: 226, rank: "A", unit: "unit4", word: "disaster", meaning: "災害", sentence: "The coastal town suffered heavily from the natural ( ).", translation: "その沿岸の町は自然災害によって甚大な被害を受けました。", answer: "disaster" },
+      { id: 227, rank: "A", unit: "unit4", word: "shelter", meaning: "避難所", sentence: "During the severe storm, villagers evacuated to the ( ).", translation: "激しい嵐の間、村人たちは避難所へ避難しました。", answer: "shelter" },
+      { id: 228, rank: "A", unit: "unit4", word: "store", meaning: "…を蓄える", sentence: "Squirrels ( ) extra food in tree hollows for the winter.", translation: "リスは冬のために余分な餌を木のうろに蓄えます。", answer: "store" },
+      { id: 229, rank: "S", unit: "unit4", word: "case", meaning: "場合", sentence: "Take an umbrella in ( ) it rains in the afternoon.", translation: "午後に雨が降る場合に備えて傘を持っていきなさい。", answer: "case" },
+      { id: 230, rank: "C", unit: "unit4", word: "extinguisher", meaning: "消火器", sentence: "Every school corridor is equipped with a modern fire ( ).", translation: "学校のすべての廊下には最新の消火器が設置されています。", answer: "extinguisher" },
+      { id: 231, rank: "A", unit: "unit4", word: "In case of", meaning: "…の場合には", sentence: "( ) emergency, call 119 immediately for ambulance service.", translation: "緊急の場合には、直ちに119番に通報してください。", answer: "In case of" },
+      { id: 232, rank: "B", unit: "unit4", word: "circle", meaning: "…を丸で囲む", sentence: "Please ( ) the correct answer on the printed test sheet.", translation: "テスト用紙の正しい答えを丸で囲んでください。", answer: "circle" },
+      { id: 233, rank: "B", unit: "unit4", word: "number", meaning: "番号", sentence: "Remember to write your student identification ( ) on top.", translation: "一番上に自分の生徒識別番号を書くのを忘れないでください。", answer: "number" },
+      { id: 234, rank: "S", unit: "unit4", word: "How much ...?", meaning: "どれくらい[値段]", sentence: "( ) does this thick English dictionary cost at the store?", translation: "この辞書は店でどれくらいの値段がしますか。", answer: "How much" },
+      { id: 235, rank: "B", unit: "unit4", word: "call", meaning: "電話をかける", sentence: "I will ( ) you as soon as I reach the train station.", translation: "駅に着いたらすぐにあなたに電話をかけます。", answer: "call" },
+      { id: 236, rank: "B", unit: "unit4", word: "fire", meaning: "火事、火災", sentence: "Firefighters bravely fought the raging ( ) in the building.", translation: "消防士たちは建物の中で猛威を振るう火災と勇敢にたたかいました。", answer: "fire" },
+      { id: 237, rank: "B", unit: "unit4", word: "done", meaning: "doの過去分詞", sentence: "Have you ( ) all the required homework for tomorrow?", translation: "明日のために必要な宿題をすべて終えましたか。", answer: "done" },
+      { id: 238, rank: "A", unit: "unit4", word: "prepare", meaning: "準備をする、備える", sentence: "We should ( ) emergency supplies before a typhoon strikes.", translation: "私たちは台風が直撃する前に非常用物資の準備をするべきです。", answer: "prepare" },
+      { id: 239, rank: "A", unit: "unit4", word: "emergency", meaning: "緊急事態", sentence: "In case of an unexpected medical ( ), remain calm and call for help.", translation: "予期せぬ医療緊急事態の際には、落ち着いて助けを呼んでください。", answer: "emergency" },
+      { id: 240, rank: "D", unit: "unit4", word: "kit", meaning: "道具一式", sentence: "Every household should have a first aid ( ) handy.", translation: "すべての家庭に応急手当道具一式が手近にあるべきです。", answer: "kit" },
+      { id: 241, rank: "B", unit: "unit4", word: "recommended", meaning: "…を推薦した、すすめた", sentence: "My teacher warmly ( ) that classic book to me.", translation: "私の先生はその名作本を私に温かくすすめてくれました。", answer: "recommended" },
+      { id: 242, rank: "B", unit: "unit4", word: "earthquake", meaning: "地震", sentence: "Japan has developed strong buildings against any ( ).", translation: "日本はどんな地震に対しても強固な建物を開発してきました。", answer: "earthquake" },
+      { id: 243, rank: "S", unit: "unit4", word: "several", meaning: "いくつかの、数回の", sentence: "I have visited that historical shrine ( ) times with friends.", translation: "私は友達と一緒にその歴史ある神社を数回訪れました。", answer: "several" },
+      { id: 244, rank: "A", unit: "unit4", word: "bridge", meaning: "かけ橋", sentence: "Sports can build a friendly cultural ( ) between young people.", translation: "スポーツは若者同士の友好な文化のかけ橋を築くことができます。", answer: "bridge" },
+      { id: 245, rank: "S", unit: "unit4", word: "between", meaning: "…の間で", sentence: "There is mutual trust ( ) the two neighboring schools.", translation: "その2つの隣り合う学校の間には相互の信頼があります。", answer: "between" },
+      { id: 246, rank: "A", unit: "unit4", word: "energetic", meaning: "エネルギッシュな", sentence: "The new team captain is very friendly and ( ).", translation: "新しいチームのキャプテンはとても親しみやすくエネルギッシュです。", answer: "energetic" },
+      { id: 247, rank: "A", unit: "unit4", word: "encourages", meaning: "…を励ます", sentence: "Our teacher always ( ) us to try our best.", translation: "私たちの先生はいつも最善を尽くすよう私たちを励ましてくれます。", answer: "encourages" },
+      { id: 248, rank: "A", unit: "unit4", word: "personality", meaning: "性格", sentence: "She has a bright and cheerful ( ).", translation: "彼女は明るく朗らかな性格をしています。", answer: "personality" },
+      { id: 249, rank: "S", unit: "unit4", word: "hit", meaning: "襲う", sentence: "A powerful typhoon ( ) the southern island yesterday.", translation: "昨日、強力な台風が南の島を襲いました。", answer: "hit" },
+      { id: 250, rank: "A", unit: "unit4", word: "comforted", meaning: "…を元気づけた", sentence: "His kind words deeply ( ) me when I was sad.", translation: "私が悲しかったとき、彼の優しい言葉が深く元気づけてくれました。", answer: "comforted" },
+      { id: 251, rank: "A", unit: "unit4", word: "nearby", meaning: "近くの", sentence: "Let's go to the ( ) convenience store to buy juice.", translation: "ジュースを買うために近くのコンビニに行きましょう。", answer: "nearby" },
+      { id: 252, rank: "S", unit: "unit4", word: "safe", meaning: "安全な", sentence: "Wear a helmet to keep your head ( ) while cycling.", translation: "自転車に乗っている間、頭を安全に保つためにヘルメットを着用してください。", answer: "safe" },
+      { id: 253, rank: "S", unit: "unit4", word: "all the time", meaning: "常に", sentence: "He practices the guitar ( ) after school.", translation: "彼は放課後、常にギターの練習をしています。", answer: "all the time" },
+      { id: 254, rank: "A", unit: "unit4", word: "killed", meaning: "…で死ぬ", sentence: "Many soldiers were ( ) in the terrible war.", translation: "多くの兵士たちがその悲惨な戦争で死にました。", answer: "killed" },
+      { id: 255, rank: "S", unit: "unit4", word: "rode", meaning: "乗った", sentence: "She ( ) her new bike to school this morning.", translation: "彼女は今朝、新しい自転車に乗って登校しました。", answer: "rode" },
+      { id: 256, rank: "B", unit: "unit4", word: "bicycle", meaning: "自転車", sentence: "Riding a ( ) is an eco-friendly way to travel.", translation: "自転車に乗ることは環境にやさしい移動手段です。", answer: "bicycle" },
+      { id: 257, rank: "S", unit: "unit4", word: "toward", meaning: "…に向かって", sentence: "He turned around and walked ( ) the school gate.", translation: "彼らは校門に向かって歩きました。", answer: "toward" },
+      { id: 258, rank: "B", unit: "unit4", word: "apartment", meaning: "アパート", sentence: "They moved into a new ( ) near the station.", translation: "彼らは駅の近くの新しいアパートに引っ越しました。", answer: "apartment" },
+      { id: 259, rank: "B", unit: "unit4", word: "caught", meaning: "catchの過去分詞・ひいた", sentence: "He ( ) a cold because he stayed out in the rain.", translation: "彼は雨の中に外に出ていたため風邪をひきました。", answer: "caught" },
+      { id: 260, rank: "B", unit: "unit4", word: "sudden", meaning: "突然の", sentence: "The ( ) announcement surprised all the passengers.", translation: "突然の発表が乗客全員を驚かせました。", answer: "sudden" },
+      { id: 261, rank: "B", unit: "unit4", word: "news", meaning: "知らせ、ニュース", sentence: "I received exciting good ( ) from my cousin today.", translation: "私は今日、いとこからワクワクする良い知らせを受け取りました。", answer: "news" },
+      { id: 262, rank: "B", unit: "unit4", word: "shortly", meaning: "まもなく", sentence: "The bus will arrive ( ), so please wait here.", translation: "バスはまもなく到着しますので、ここでお待ちください。", answer: "shortly" },
+      { id: 263, rank: "B", unit: "unit4", word: "corner", meaning: "角、コーナー", sentence: "There is a bakery at the street ( ).", translation: "通りの角にパン屋さんがあります。", answer: "corner" },
+      { id: 264, rank: "B", unit: "unit4", word: "exchange", meaning: "交流", sentence: "Our school has a cultural ( ) event every autumn.", translation: "私たちの学校では毎年秋に文化交流行事があります。", answer: "exchange" },
+      { id: 265, rank: "A", unit: "unit4", word: "program", meaning: "プログラム", sentence: "He joined an English study abroad ( ) during summer.", translation: "彼は夏の間に英語留学プログラムに参加しました。", answer: "program" },
+      { id: 266, rank: "A", unit: "unit4", word: "support", meaning: "…を支える、支援する", sentence: "Friends should always ( ) each other in hard times.", translation: "友達同士は困難な時には常に支え合うべきです。", answer: "support" },
+      { id: 267, rank: "A", unit: "unit4", word: "ordinary", meaning: "ふつうの、通常の", sentence: "He is just an ( ) middle school student.", translation: "彼はごくふつうの中学生です。", answer: "ordinary" },
+      { id: 268, rank: "A", unit: "unit4", word: "crisis", meaning: "危機", sentence: "The country is facing an economic ( ) right now.", translation: "その国は現在、経済的な危機に直面しています。", answer: "crisis" },
+      { id: 269, rank: "A", unit: "unit4", word: "be caught in", meaning: "…にあう", sentence: "We may ( ) a heavy downpour on our way home.", translation: "私たちは帰宅の途中で激しい土砂降りにあうかもしれません。", answer: "be caught in" },
+      { id: 270, rank: "A", unit: "unit4", word: "bring together", meaning: "…を団結させる", sentence: "Music can ( ) people from different cultures ( ).", translation: "音楽は異なる文化の人々を団結させることができます。", answer: "bring together" },
+      { id: 271, rank: "B", unit: "unit4", word: "keep on", meaning: "…し続ける", sentence: "You should ( ) trying until you achieve success.", translation: "成功を収めるまで挑戦し続けるべきです。", answer: "keep on" },
+      { id: 272, rank: "B", unit: "unit4", word: "no longer", meaning: "もはや…ない", sentence: "The old train line is ( ) in service.", translation: "その古い鉄道路線はもはや運行されていません。", answer: "no longer" },
+      { id: 273, rank: "S", unit: "unit4", word: "at", meaning: "…によって(原因)", sentence: "She was surprised ( ) the unexpected announcement.", translation: "彼女は予期せぬ発表によって驚きました。", answer: "at" },
+      { id: 274, rank: "B", unit: "unit4", word: "work", meaning: "努力する、取り組む", sentence: "We must ( ) together to solve global warming.", translation: "私たちは地球温暖化を解決するために共に努力しなければなりません。", answer: "work" },
+      { id: 275, rank: "B", unit: "unit4", word: "on", meaning: "続けて、進行中で", sentence: "Keep ( ) practicing your English conversation skills.", translation: "英会話のスキルを継続して練習し続けてください。", answer: "on" },
+      { id: 276, rank: "S", unit: "unit5", word: "internet", meaning: "インターネット", sentence: "You can search for lots of information on the ( ).", translation: "インターネット上でたくさんの情報を検索することができます。", answer: "internet" },
+      { id: 277, rank: "S", unit: "unit5", word: "person", meaning: "人、個人", sentence: "He is a kind and thoughtful ( ) to everyone.", translation: "彼は誰に対しても親切で思いやりのある人です。", answer: "person" },
+      { id: 278, rank: "A", unit: "unit5", word: "image", meaning: "像、印象", sentence: "The artist drew a clear ( ) of the mountain.", translation: "その芸術家はその山の鮮明な像を描きました。", answer: "image" },
+      { id: 279, rank: "B", unit: "unit5", word: "print", meaning: "…を印刷する", sentence: "Please ( ) your student name clearly on the paper.", translation: "用紙に自分の生徒名をはっきりと印刷してください。", answer: "print" },
+      { id: 280, rank: "B", unit: "unit5", word: "leader", meaning: "指導者、リーダー", sentence: "She was chosen as the team ( ) for her ability.", translation: "彼女はその能力を買われてチームのリーダーに選ばれました。", answer: "leader" },
+      { id: 281, rank: "A", unit: "unit5", word: "greatly", meaning: "おおいに、非常に", sentence: "His advice ( ) helped me pass the tough exam.", translation: "彼のアドバイスは私が難関試験に合格するのを大いに助けました。", answer: "greatly" },
+      { id: 282, rank: "B", unit: "unit5", word: "born", meaning: "生まれる", sentence: "She was ( ) and raised in a quiet town in Kyoto.", translation: "彼女は京都の静かな町で生まれ育ちました。", answer: "born" },
+      { id: 283, rank: "A", unit: "unit5", word: "national", meaning: "国の、国立の", sentence: "Mount Fuji is a famous ( ) park in Japan.", translation: "富士山は日本の有名な国の公園です。", answer: "national" },
+      { id: 284, rank: "C", unit: "unit5", word: "non-violence", meaning: "非暴力", sentence: "Gandhi was known worldwide for practicing ( ).", translation: "ガンディーは非暴力を実践したことで世界的に知られていました。", answer: "non-violence" },
+      { id: 285, rank: "B", unit: "unit5", word: "Indian", meaning: "インドの", sentence: "Curry is a very popular traditional ( ) dish.", translation: "カレーはとても人気のある伝統的なインドの料理です。", answer: "Indian" },
+      { id: 286, rank: "S", unit: "unit5", word: "on the internet", meaning: "インターネットで", sentence: "Many young people enjoy watching videos ( ).", translation: "多くの若者がインターネットで動画を見ることを楽しんでいます。", answer: "on the internet" },
+      { id: 287, rank: "B", unit: "unit5", word: "on", meaning: "…で(手段・媒体)", sentence: "We heard the urgent news ( ) the radio.", translation: "私たちはラジオでその緊急ニュースを聞きました。", answer: "on" },
+      { id: 288, rank: "C", unit: "unit5", word: "note", meaning: "紙幣", sentence: "He pulled out a thousand-yen ( ) from his wallet.", translation: "彼は財布から千円紙幣を取り出しました。", answer: "note" },
+      { id: 289, rank: "B", unit: "unit5", word: "independence", meaning: "独立", sentence: "The nation celebrated fifty years of ( ) from colonial rule.", translation: "その国は植民地支配からの独立50周年を祝いました。", answer: "independence" },
+      { id: 290, rank: "A", unit: "unit5", word: "violence", meaning: "暴力", sentence: "We must resolve conflicts without using any ( ).", translation: "私たちは暴力を行使することなく紛争を解決しなければなりません。", answer: "violence" },
+      { id: 291, rank: "S", unit: "unit5", word: "fight", meaning: "たたかう、たたかい", sentence: "Soldiers were forced to ( ) for their country.", translation: "兵士たちは国のためにたたかうことを強いられました。", answer: "fight" },
+      { id: 292, rank: "B", unit: "unit5", word: "protest", meaning: "抗議する、抗議運動", sentence: "Citizens gathered to ( ) against the unfair policy.", translation: "市民たちは不公平な政策に抗議するために集まりました。", answer: "protest" },
+      { id: 293, rank: "A", unit: "unit5", word: "tough", meaning: "困難な、難しい", sentence: "The final examination was very ( ) for the students.", translation: "期末試験は生徒たちにとって非常に困難なものでした。", answer: "tough" },
+      { id: 294, rank: "B", unit: "unit5", word: "fasts", meaning: "断食", sentence: "Gandhi went on long ( ) to appeal for peace.", translation: "ガンディーは平和を訴えるために長期間の断食を行いました。", answer: "fasts" },
+      { id: 295, rank: "B", unit: "unit5", word: "human rights", meaning: "人権", sentence: "Every individual deserves fundamental ( ) and respect.", translation: "すべての個人は基本的人権と尊重を受けるに値します。", answer: "human rights" },
+      { id: 296, rank: "B", unit: "unit5", word: "go on", meaning: "…をする、続ける", sentence: "The debate will ( ) until all speakers finish.", translation: "討論はすべての発言者が終えるまで続けられます。", answer: "go on" },
+      { id: 297, rank: "A", unit: "unit5", word: "right", meaning: "権利", sentence: "Every child has the ( ) to receive basic education.", translation: "すべての子どもには初等教育を受ける権利があります。", answer: "right" },
+      { id: 298, rank: "S", unit: "unit5", word: "little", meaning: "ほとんどない", sentence: "There is ( ) water left in the emergency bottle.", translation: "非常用のボトルにはほとんど水が残っていません。", answer: "little" },
+      { id: 299, rank: "B", unit: "unit5", word: "lawyer", meaning: "弁護士", sentence: "She studied very hard to become a human rights ( ).", translation: "彼女は人権弁護士になるためにとても一生懸命勉強しました。", answer: "lawyer" },
+      { id: 300, rank: "B", unit: "unit5", word: "British", meaning: "英国の、イギリス人", sentence: "They visited several historic ( ) castles in London.", translation: "彼らはロンドンでいくつかの歴史的な英国のお城を訪れました。", answer: "British" },
+      { id: 301, rank: "C", unit: "unit5", word: "discrimination", meaning: "差別", sentence: "We must eliminate racial ( ) from society.", translation: "私たちは社会から人種差別を排除しなければなりません。", answer: "discrimination" },
+      { id: 302, rank: "B", unit: "unit5", word: "freely", meaning: "自由に", sentence: "Birds can fly ( ) anywhere in the blue sky.", translation: "鳥は青空の中をどこへでも自由に飛ぶことができます。", answer: "freely" },
+      { id: 303, rank: "A", unit: "unit5", word: "sidewalk", meaning: "歩道", sentence: "Pedestrians should safely walk on the ( ).", translation: "歩行者は安全に歩道を歩くべきです。", answer: "sidewalk" },
+      { id: 304, rank: "B", unit: "unit5", word: "accept", meaning: "…を受け入れる", sentence: "It is important to ( ) different opinions calmly.", translation: "異なる意見を冷静に受け入れることは大切です。", answer: "accept" },
+      { id: 305, rank: "B", unit: "unit5", word: "law", meaning: "法律、規則", sentence: "Everyone must obey the traffic ( ) on the road.", translation: "誰もが道路上の交通法律を守らなければなりません。", answer: "law" },
+      { id: 306, rank: "A", unit: "unit5", word: "unfair", meaning: "不公平な", sentence: "The referee's decision seemed ( ) to the visiting team.", translation: "審判の判定はアウェーチームにとって不公平に見えました。", answer: "unfair" },
+      { id: 307, rank: "B", unit: "unit5", word: "stood", meaning: "立った", sentence: "All students ( ) up when the principal entered.", translation: "校長先生が入室したとき、全校生徒が立ち上がりました。", answer: "stood" },
+      { id: 308, rank: "B", unit: "unit5", word: "arrest", meaning: "…を逮捕する", sentence: "Police officers arrived quickly to ( ) the suspect.", translation: "警察官たちが容疑者を逮捕するために素早く到着しました。", answer: "arrest" },
+      { id: 309, rank: "B", unit: "unit5", word: "jail", meaning: "刑務所", sentence: "The criminal was sent to ( ) for ten years.", translation: "その犯罪者は10年間刑務所に送られました。", answer: "jail" },
+      { id: 310, rank: "B", unit: "unit5", word: "non-violent", meaning: "非暴力の", sentence: "They held a peaceful and ( ) protest in town.", translation: "彼らは町で平和的かつ非暴力の抗議運動を行いました。", answer: "non-violent" },
+      { id: 311, rank: "B", unit: "unit5", word: "effective", meaning: "効果的な", sentence: "Washing your hands is an ( ) way to prevent colds.", translation: "手を洗うことは風邪を予防する効果的な方法です。", answer: "effective" },
+      { id: 312, rank: "S", unit: "unit5", word: "at that time", meaning: "その当時", sentence: "People didn't have smart devices ( ).", translation: "その当時、人々はスマート機器を持っていませんでした。", answer: "at that time" },
+      { id: 313, rank: "S", unit: "unit5", word: "go out", meaning: "外出する", sentence: "Don't forget to take an umbrella when you ( ).", translation: "外出するときは傘を持っていくのを忘れないでください。", answer: "go out" },
+      { id: 314, rank: "B", unit: "unit5", word: "even if", meaning: "たとえ…だとしても", sentence: "I will support your dream ( ) others oppose it.", translation: "たとえ他の人が反対したとしても、私はあなたの夢を応援します。", answer: "even if" },
+      { id: 315, rank: "A", unit: "unit5", word: "rule", meaning: "支配、統治", sentence: "The country was once under foreign colonial ( ).", translation: "その国はかつて外国の植民地支配下にありました。", answer: "rule" },
+      { id: 316, rank: "S", unit: "unit5", word: "even", meaning: "さらにいっそう", sentence: "This modern train runs ( ) faster than that old one.", translation: "この最新の電車はあの古いものよりもさらにいっそう速く走ります。", answer: "even" },
+      { id: 317, rank: "B", unit: "unit5", word: "stand", meaning: "立ち上がる、起立する", sentence: "Please ( ) up and read the textbook aloud.", translation: "立ち上がって教科書を声に出して読んでください。", answer: "stand" },
+      { id: 318, rank: "S", unit: "unit5", word: "lead", meaning: "…を導く、先導する", sentence: "The experienced guide will ( ) us to the ancient castle.", translation: "経験豊富なガイドが私たちをその古代の城へと先導してくれます。", answer: "lead" },
+      { id: 319, rank: "S", unit: "unit5", word: "sent", meaning: "sendの過去分詞", sentence: "A birthday gift was ( ) by my grandfather yesterday.", translation: "昨日、祖父によって誕生日プレゼントが送られました。", answer: "sent" },
+      { id: 320, rank: "B", unit: "unit5", word: "colony", meaning: "植民地", sentence: "The island used to be a distant overseas ( ).", translation: "その島はかつて遠く離れた海外植民地でした。", answer: "colony" },
+      { id: 321, rank: "A", unit: "unit5", word: "produce", meaning: "…を生産する", sentence: "This local farm can ( ) fresh vegetables all year.", translation: "この地元の農場は一年中新鮮な野菜を生産することができます。", answer: "produce" },
+      { id: 322, rank: "B", unit: "unit5", word: "tax", meaning: "税金", sentence: "We pay consumption ( ) when buying goods in stores.", translation: "私たちは店で品物を買うときに消費税を払います。", answer: "tax" },
+      { id: 323, rank: "B", unit: "unit5", word: "expensive", meaning: "高価な", sentence: "That luxury sports car is far too ( ) for me.", translation: "あの高級スポーツカーは私にはあまりにも高価です。", answer: "expensive" },
+      { id: 324, rank: "A", unit: "unit5", word: "followers", meaning: "支持者", sentence: "Gandhi had millions of devoted ( ) across the nation.", translation: "ガンディーには国中に何百万人もの献身的な支持者がいました。", answer: "followers" },
+      { id: 325, rank: "B", unit: "unit5", word: "thousand", meaning: "1,000", sentence: "More than one ( ) fans attended the live concert.", translation: "1,000人を超えるファンがライブコンサートに参加しました。", answer: "thousand" },
+      { id: 326, rank: "A", unit: "unit5", word: "march", meaning: "行進", sentence: "Citizens joined the historic peace ( ) in the capital.", translation: "市民たちは首都での歴史的な平和行進に参加しました。", answer: "march" },
+      { id: 237, rank: "A", unit: "unit5", word: "peaceful", meaning: "平和な", sentence: "They hope to build a ( ) world without conflicts.", translation: "彼らは紛争のない平和な世界を築くことを望んでいます。", answer: "peaceful" },
+      { id: 328, rank: "B", unit: "unit5", word: "legacy", meaning: "遺産", sentence: "The ancient temple is part of our cultural ( ).", translation: "その古い寺院は私たちの文化遺産の一部です。", answer: "legacy" },
+      { id: 329, rank: "A", unit: "unit5", word: "in those days", meaning: "そのころは", sentence: "People had no internet or smartphones ( ).", translation: "そのころは人々はインターネットも持っていませんでした。", answer: "in those days" },
+      { id: 330, rank: "B", unit: "unit5", word: "thousands of", meaning: "何千もの", sentence: "( ) volunteers helped clean up the damaged city.", translation: "何千ものボランティアが被災した町の片付けを手伝いました。", answer: "Thousands of" },
+      { id: 331, rank: "S", unit: "unit5", word: "way to", meaning: "…する方法", sentence: "Can you teach me the best ( ) cook this dish?", translation: "この料理を調理する最高の方法を教えてもらえますか。", answer: "way to" },
+      { id: 332, rank: "A", unit: "unit5", word: "put", meaning: "（税など）を課す", sentence: "The government decided to ( ) a heavy tax on luxury imports.", translation: "政府は高級輸入品に重い税金を課すことを決定しました。", answer: "put" },
+      { id: 333, rank: "B", unit: "unit5", word: "spread", meaning: "広がる、広まる", sentence: "The new trend began to ( ) fast among high schoolers.", translation: "新しい流行が高校生たちの間で急速に広まり始めました。", answer: "spread" },
+      { id: 334, rank: "D", unit: "unit5", word: "texting", meaning: "メッセージをおくること", sentence: "Please avoid ( ) while walking across the street.", translation: "通りを横断しながらメッセージをおくることは避けてください。", answer: "texting" },
+      { id: 335, rank: "B", unit: "unit5", word: "ban", meaning: "…を禁止する", sentence: "The town decided to ( ) plastic bags in shops.", translation: "町は店舗でのプラスチック袋を禁止することを決めました。", answer: "ban" },
+      { id: 336, rank: "A", unit: "unit5", word: "electronic", meaning: "電子の", sentence: "My brother likes fixing complex ( ) components.", translation: "私の兄は複雑な電子部品を修理するのが好きです。", answer: "electronic" },
+      { id: 337, rank: "B", unit: "unit5", word: "device", meaning: "装置", sentence: "A smartphone is a multifunctional personal ( ).", translation: "スマートフォンは多機能な個人用装置です。", answer: "device" },
+      { id: 338, rank: "A", unit: "unit5", word: "cross", meaning: "…を横切る、渡る", sentence: "Look both ways carefully before you ( ) the street.", translation: "通りを横断する前に両側をしっかり見てください。", answer: "cross" },
+      { id: 339, rank: "B", unit: "unit5", word: "decision", meaning: "決定、結論", sentence: "She had to make an important ( ) regarding her future.", translation: "彼女は自分の将来に関する重要な決定を下さなければなりませんでした。", answer: "decision" },
+      { id: 340, rank: "B", unit: "unit5", word: "bother", meaning: "面倒、悩ませる", sentence: "Don't let minor problems ( ) your daily peace of mind.", translation: "些細な問題が毎日の心の平穏の邪魔にならないようにしなさい。", answer: "bother" },
+      { id: 341, rank: "S", unit: "unit5", word: "common", meaning: "よくある、共通の", sentence: "Sharing hobbies is a ( ) interest among close friends.", translation: "趣味を共有することは親しい友人同士の共通の関心事です。", answer: "common" },
+      { id: 342, rank: "B", unit: "unit5", word: "any", meaning: "どんな…でも", sentence: "You can select ( ) book you prefer from the shelf.", translation: "本棚からあなたが好きなどんな本でも選んでよいです。", answer: "any" },
+      { id: 343, rank: "B", unit: "unit5", word: "choose to", meaning: "…することに決める", sentence: "They ( ) study abroad to expand their horizons.", translation: "彼らは視野を広げるために留学することに決めました。", answer: "chose to" },
+      { id: 344, rank: "B", unit: "unit6", word: "backpack", meaning: "バックパック", sentence: "He packed his school supplies into his sturdy ( ).", translation: "彼は丈夫なバックパックの中に学校の用具を詰めました。", answer: "backpack" },
+      { id: 345, rank: "B", unit: "unit6", word: "overseas", meaning: "海外で、外国へ", sentence: "She plans to study music ( ) after graduating from school.", translation: "彼女は卒業後に海外で音楽を勉強することを計画しています。", answer: "overseas" },
+      { id: 346, rank: "B", unit: "unit6", word: "unused", meaning: "未使用の", sentence: "We donated several boxes of ( ) stationery to charity.", translation: "私たちは慈善団体に未使用の文房具を何箱か寄付しました。", answer: "unused" },
+      { id: 347, rank: "B", unit: "unit6", word: "supplies", meaning: "必需品", sentence: "Volunteers brought basic food ( ) to the storm victims.", translation: "ボランティアは嵐の被災者に基本的な食料必需品を届けました。", answer: "supplies" },
+      { id: 348, rank: "B", unit: "unit6", word: "abroad", meaning: "外国に、海外へ", sentence: "My dream is to live and work ( ) someday.", translation: "私の夢はいつか外国で暮らして働くことです。", answer: "abroad" },
+      { id: 349, rank: "B", unit: "unit6", word: "donate", meaning: "…を寄付する", sentence: "Many people chose to ( ) warm winter coats to shelters.", translation: "多くの人々が避難所に暖かい冬のコートを寄付することを選びました。", answer: "donate" },
+      { id: 350, rank: "S", unit: "unit6", word: "this way", meaning: "このように", sentence: "If you practice ( ), you will speak English fluently.", translation: "このように練習すれば、英語を流暢に話せるようになるでしょう。", answer: "this way" },
+      { id: 351, rank: "B", unit: "unit6", word: "wish", meaning: "…であればいいのだが", sentence: "I ( ) I could speak five different foreign languages.", translation: "5つの異なる外国語を話せればいいのだがと思います。", answer: "wish" },
+      { id: 352, rank: "A", unit: "unit6", word: "run", meaning: "…を主催する、運営する", sentence: "The local community will ( ) an annual charity marathon.", translation: "地域コミュニティは毎年のチャリティーマラソンを主催する予定です。", answer: "run" },
+      { id: 353, rank: "B", unit: "unit6", word: "definitely", meaning: "確かに、もちろん", sentence: "I will ( ) come to your school festival next week.", translation: "来週のあなたの学校祭には間違いなく行きます。", answer: "definitely" },
+      { id: 354, rank: "S", unit: "unit6", word: "so far", meaning: "これまでのところ", sentence: "Our team has won all three matches ( ).", translation: "私たちのチームはこれまでのところ3試合すべてに勝ちました。", answer: "so far" },
+      { id: 355, rank: "B", unit: "unit6", word: "If", meaning: "もし…ならば(仮定法)", sentence: "( ) I were rich, I would travel around the world.", translation: "もし私がお金持ちならば、世界中を旅するだろうに。", answer: "If" },
+      { id: 356, rank: "S", unit: "unit6", word: "would", meaning: "…だろうに(仮定法)", sentence: "If I had wings, I ( ) fly across the ocean to you.", translation: "もし私に翼があれば、海を越えてあなたのところへ飛んでいくのに。", answer: "would" },
+      { id: 357, rank: "B", unit: "unit6", word: "imagine", meaning: "…を想像する", sentence: "Can you ( ) living on Mars in the near future?", translation: "近い将来に火星で暮らすことを想像できますか。", answer: "imagine" },
+      { id: 358, rank: "B", unit: "unit6", word: "illiterate", meaning: "読み書きのできない", sentence: "Volunteers teach ( ) adults how to read and write.", translation: "ボランティアは読み書きのできない大人に読み書きの仕方を教えています。", answer: "illiterate" },
+      { id: 359, rank: "B", unit: "unit6", word: "son", meaning: "息子", sentence: "Mr. Tanaka took his eldest ( ) to the baseball game.", translation: "田中さんは長男を野球の試合に連れて行きました。", answer: "son" },
+      { id: 360, rank: "B", unit: "unit6", word: "daughter", meaning: "娘", sentence: "Her young ( ) plays the violin very beautifully.", translation: "彼女の幼い娘はとても美しくバイオリンを演奏します。", answer: "daughter" },
+      { id: 361, rank: "B", unit: "unit6", word: "ready", meaning: "用意ができて", sentence: "Are you ( ) to leave for school right now?", translation: "今すぐ学校へ出発する用意ができていますか。", answer: "ready" },
+      { id: 362, rank: "B", unit: "unit6", word: "air", meaning: "空気", sentence: "Open the window to let some fresh morning ( ) in.", translation: "新鮮な朝の空気を入れるために窓を開けてください。", answer: "air" },
+      { id: 363, rank: "B", unit: "unit6", word: "service", meaning: "サービス", sentence: "The hotel provides wonderful customer ( ) to guests.", translation: "そのホテルは宿泊客に素晴らしい顧客サービスを提供しています。", answer: "service" },
+      { id: 364, rank: "B", unit: "unit6", word: "globe", meaning: "地球", sentence: "Travelers dream of journeying all across the ( ).", translation: "旅行者たちは地球の至る所を旅することを夢見ています。", answer: "globe" },
+      { id: 365, rank: "B", unit: "unit6", word: "connect", meaning: "…を結ぶ", sentence: "This new high-speed railway will ( ) the two major cities.", translation: "この新しい高速鉄道はその2つの主要都市を結びます。", answer: "connect" },
+      { id: 366, rank: "B", unit: "unit6", word: "border", meaning: "国境", sentence: "Passports are strictly inspected at the national ( ).", translation: "パスポートは国の国境で厳格に検査されます。", answer: "border" },
+      { id: 367, rank: "B", unit: "unit6", word: "encourage ... to", meaning: "…に～するよう促す", sentence: "Teachers always ( ) us ( ) read good literature.", translation: "先生たちはいつも私たちに良い文学を読むよう促してくれます。", answer: "encourage to" },
+      { id: 368, rank: "B", unit: "unit6", word: "Most of", meaning: "…の大部分", sentence: "( ) the students walked to the museum together.", translation: "その生徒たちの大部分が一緒に博物館まで歩きました。", answer: "Most of" },
+      { id: 369, rank: "B", unit: "unit6", word: "be ready for", meaning: "…の用意ができている", sentence: "Are you fully ( ) the final examination tomorrow?", translation: "あなたは明日の期末試験の用意が十分にできていますか。", answer: "be ready for" },
+      { id: 370, rank: "B", unit: "unit6", word: "in the open air", meaning: "屋外で", sentence: "We enjoyed eating lunch ( ) under the blue sky.", translation: "私たちは青空の下、屋外で昼食を食べるのを楽しみました。", answer: "in the open air" }
+    ];
+
+    // 純粋なGASコード文字列
+    const PURE_GAS_CODE = `function doPost(e) {
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = ss.getSheetByName("解答成績ログ") || ss.insertSheet("解答成績ログ");
+    
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow([
+        "送信日時",
+        "生徒氏名",
+        "出題範囲",
+        "学習モード",
+        "難易度",
+        "正解数",
+        "総問題数",
+        "正答率(%)",
+        "間違えた単語リスト"
+      ]);
+      var header = sheet.getRange(1, 1, 1, 9);
+      header.setFontWeight("bold").setBackground("#e0e7ff").setHorizontalAlignment("center");
+      sheet.setFrozenRows(1);
+    }
+    
+    var data = JSON.parse(e.postData.contents);
+    var wrongStr = (data.wrongWords && data.wrongWords.length > 0) ? data.wrongWords.join(", ") : "全問正解（ミスなし）";
+    
+    sheet.appendRow([
+      data.date || new Date().toLocaleString("ja-JP"),
+      data.student || "未記入生徒",
+      data.unitFilter || "ALL",
+      data.mode || "-",
+      data.level || "-",
+      Number(data.score) || 0,
+      Number(data.total) || 0,
+      (Number(data.percent) || 0) + "%",
+      wrongStr
+    ]);
+    
+    return ContentService.createTextOutput("SUCCESS").setMimeType(ContentService.MimeType.TEXT);
+  } catch (err) {
+    return ContentService.createTextOutput("ERROR: " + err.message).setMimeType(ContentService.MimeType.TEXT);
+  }
+}
+
+function doGet() {
+  return ContentService.createTextOutput("接続成功！中3英単語マスターProの受信サーバーは正常に稼働しています。").setMimeType(ContentService.MimeType.TEXT);
+}`;
+
+    // 定義されている全Unitリスト
+    const ALL_UNITS = [
+      { key: "unit0", label: "Unit 0" },
+      { key: "unit1", label: "Unit 1" },
+      { key: "unit2", label: "Unit 2" },
+      { key: "unit3", label: "Unit 3" },
+      { key: "Let's Read 1", label: "Let's Read 1" },
+      { key: "unit4", label: "Unit 4" },
+      { key: "unit5", label: "Unit 5" },
+      { key: "unit6", label: "Unit 6" },
+      { key: "Let's Read 2", label: "Let's Read 2" }
+    ];
+
+    let selectedUnits = ALL_UNITS.map(u => u.key);
+
+    let wordsData = [];
+    let currentQuiz = {
+      mode: 'en-ja',
+      level: 'intermediate',
+      count: 10,
+      unitFilter: 'ALL',
+      studentName: '',
+      questions: [],
+      currentIndex: 0,
+      score: 0,
+      results: []
+    };
+
+    let spellingState = {
+      targetLetters: [],
+      originalLetters: [],
+      currentInput: [],
+      revealedHints: []
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initStorage();
+      loadStudentProfile();
+      updateTotalWordsCount();
+      renderUnitCheckboxes();
+      renderManageTable();
+      updateAnalyticsDisplay();
+      initKeyboardListener();
+      updateSheetSyncStatusBar();
+    });
+
+    function initStorage() {
+      const stored = localStorage.getItem('m3_words_data_v3');
+      if (stored) {
+        try {
+          wordsData = JSON.parse(stored);
+          if (wordsData.length < DEFAULT_WORDS.length) {
+            wordsData = [...DEFAULT_WORDS];
+            saveWordsToStorage();
+          }
+        } catch(e) {
+          wordsData = [...DEFAULT_WORDS];
+          saveWordsToStorage();
+        }
+      } else {
+        wordsData = [...DEFAULT_WORDS];
+        saveWordsToStorage();
+      }
+    }
+
+    function saveWordsToStorage() {
+      localStorage.setItem('m3_words_data_v3', JSON.stringify(wordsData));
+      updateTotalWordsCount();
+    }
+
+    function updateTotalWordsCount() {
+      const el = document.getElementById('total-words-count');
+      if (el) el.textContent = wordsData.length;
+    }
+
+    function loadStudentProfile() {
+      const savedName = localStorage.getItem('m3_student_name') || '';
+      const nameInput = document.getElementById('student-name-input');
+      if (nameInput) nameInput.value = savedName;
+    }
+
+    function saveStudentProfile(sName) {
+      localStorage.setItem('m3_student_name', sName);
+    }
+
+    function renderUnitCheckboxes() {
+      const container = document.getElementById('unit-checkbox-container');
+      if (!container) return;
+      container.innerHTML = '';
+
+      ALL_UNITS.forEach(u => {
+        const count = wordsData.filter(w => isUnitMatch(w.unit, u.key)).length;
+        const isChecked = selectedUnits.includes(u.key);
+
+        const label = document.createElement('label');
+        label.className = `p-2.5 rounded-xl border-2 transition flex items-center justify-between cursor-pointer select-none ${
+          isChecked ? 'border-indigo-600 bg-indigo-50/70 text-indigo-950 font-bold' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
+        }`;
+        
+        label.innerHTML = `
+          <div class="flex items-center gap-2">
+            <input type="checkbox" value="${u.key}" ${isChecked ? 'checked' : ''} onchange="toggleUnit('${u.key}', this.checked)" class="accent-indigo-600 w-4 h-4 rounded">
+            <span class="text-xs">${u.label}</span>
+          </div>
+          <span class="text-[10px] text-slate-400 font-mono">${count}語</span>
+        `;
+        container.appendChild(label);
+      });
+
+      updateUnitSummaryDisplay();
+    }
+
+    function toggleUnit(unitKey, isChecked) {
+      if (isChecked) {
+        if (!selectedUnits.includes(unitKey)) selectedUnits.push(unitKey);
+      } else {
+        selectedUnits = selectedUnits.filter(k => k !== unitKey);
+      }
+      renderUnitCheckboxes();
+    }
+
+    function setAllUnits(enableAll) {
+      if (enableAll) {
+        selectedUnits = ALL_UNITS.map(u => u.key);
+      } else {
+        selectedUnits = [];
+      }
+      renderUnitCheckboxes();
+    }
+
+    function isUnitMatch(targetUnit, filterUnit) {
+      if (!targetUnit || !filterUnit) return false;
+      return targetUnit.toLowerCase().replace(/\s+/g,'') === filterUnit.toLowerCase().replace(/\s+/g,'');
+    }
+
+    function updateUnitSummaryDisplay() {
+      const summaryEl = document.getElementById('unit-selection-summary');
+      const alertEl = document.getElementById('unit-select-alert');
+      if (!summaryEl) return;
+
+      const matchedWords = wordsData.filter(w => selectedUnits.some(uKey => isUnitMatch(w.unit, uKey)));
+
+      if (selectedUnits.length === 0) {
+        summaryEl.textContent = '選択なし (0語)';
+        summaryEl.className = 'bg-rose-100 text-rose-800 font-bold px-2 py-0.5 rounded-full text-[11px]';
+        if (alertEl) alertEl.classList.remove('hidden');
+      } else if (selectedUnits.length === ALL_UNITS.length) {
+        summaryEl.textContent = `全Unit対象 (${matchedWords.length}語)`;
+        summaryEl.className = 'bg-indigo-100 text-indigo-800 font-bold px-2 py-0.5 rounded-full text-[11px]';
+        if (alertEl) alertEl.classList.add('hidden');
+      } else {
+        summaryEl.textContent = `${selectedUnits.length}つのUnit選択中 (${matchedWords.length}語)`;
+        summaryEl.className = 'bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full text-[11px]';
+        if (alertEl) alertEl.classList.add('hidden');
+      }
+    }
+
+    function showScreen(screenId) {
+      const screens = ['home', 'quiz', 'result', 'analytics', 'dictionary', 'manage'];
+      screens.forEach(s => {
+        const el = document.getElementById(`screen-${s}`);
+        if (el) el.classList.add('hidden');
+      });
+      const target = document.getElementById(`screen-${screenId}`);
+      if (target) target.classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      if (screenId === 'analytics') updateAnalyticsDisplay();
+      if (screenId === 'manage') renderManageTable();
+    }
+
+    function selectMode(mode) {
+      currentQuiz.mode = mode;
+      document.querySelectorAll('.mode-btn').forEach(btn => {
+        btn.classList.remove('border-indigo-600', 'bg-indigo-50/50', 'border-purple-600', 'bg-purple-100/60');
+        btn.classList.add('border-slate-200');
+      });
+      const activeBtn = document.getElementById(`btn-mode-${mode}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('border-slate-200');
+        if (mode === 'spelling') {
+          activeBtn.classList.add('border-purple-600', 'bg-purple-100/60');
+        } else {
+          activeBtn.classList.add('border-indigo-600', 'bg-indigo-50/50');
+        }
+      }
+    }
+
+    function selectLevel(level) {
+      currentQuiz.level = level;
+      document.querySelectorAll('.lvl-btn').forEach(btn => {
+        btn.classList.remove('border-indigo-600', 'bg-indigo-50/50', 'border-red-600', 'bg-rose-50');
+        btn.classList.add('border-slate-200');
+      });
+      const activeBtn = document.getElementById(`btn-lvl-${level}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('border-slate-200');
+        if (level === 'hell') {
+          activeBtn.classList.add('border-red-600', 'bg-rose-50');
+        } else {
+          activeBtn.classList.add('border-indigo-600', 'bg-indigo-50/50');
+        }
+      }
+    }
+
+    function selectCount(count) {
+      currentQuiz.count = count;
+      document.querySelectorAll('.count-btn').forEach(btn => {
+        btn.classList.remove('border-indigo-600', 'bg-indigo-50/50', 'text-indigo-900');
+        btn.classList.add('border-slate-200', 'text-slate-700');
+      });
+      const activeBtn = document.getElementById(`btn-count-${count}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('border-slate-200', 'text-slate-700');
+        activeBtn.classList.add('border-indigo-600', 'bg-indigo-50/50', 'text-indigo-900');
+      }
+    }
+
+    function startQuiz() {
+      const nameInput = document.getElementById('student-name-input');
+      const alertBox = document.getElementById('student-input-alert');
+      const sName = nameInput ? nameInput.value.trim() : '';
+
+      if (!sName) {
+        if (alertBox) alertBox.classList.remove('hidden');
+        if (nameInput) {
+          nameInput.focus();
+          nameInput.classList.add('ring-2', 'ring-rose-500', 'border-rose-400');
+          setTimeout(() => nameInput.classList.remove('ring-2', 'ring-rose-500', 'border-rose-400'), 2500);
+        }
+        showToast('⚠️ 成績を提出するため「氏名」を入力してください');
+        return;
+      }
+
+      if (selectedUnits.length === 0) {
+        showToast('⚠️ 出題範囲のUnitを1つ以上選んでください');
+        const alertEl = document.getElementById('unit-select-alert');
+        if (alertEl) alertEl.classList.remove('hidden');
+        return;
+      }
+
+      if (alertBox) alertBox.classList.add('hidden');
+      saveStudentProfile(sName);
+
+      currentQuiz.studentName = sName;
+      const badgeDisplay = document.getElementById('quiz-student-display-name');
+      if (badgeDisplay) badgeDisplay.textContent = sName;
+
+      let unitFilterLabel = '';
+      if (selectedUnits.length === ALL_UNITS.length) {
+        unitFilterLabel = 'ALL';
+      } else {
+        unitFilterLabel = selectedUnits.join(', ');
+      }
+      currentQuiz.unitFilter = unitFilterLabel;
+
+      let pool = wordsData.filter(w => selectedUnits.some(uKey => isUnitMatch(w.unit, uKey)));
+
+      if (pool.length === 0) {
+        showToast('選択された範囲に単語がありません');
+        return;
+      }
+
+      const questions = generateQuizQuestions(pool, currentQuiz.level, currentQuiz.count, currentQuiz.mode);
+      if (questions.length === 0) {
+        showToast('問題の生成に失敗しました');
+        return;
+      }
+
+      currentQuiz.questions = questions;
+      currentQuiz.currentIndex = 0;
+      currentQuiz.score = 0;
+      currentQuiz.results = [];
+
+      renderQuestionUI();
+      showScreen('quiz');
+    }
+
+    function generateQuizQuestions(pool, level, count, mode) {
+      const byRank = { S: [], A: [], B: [], C: [], D: [] };
+      pool.forEach(w => {
+        const r = (w.rank || 'B').toUpperCase();
+        if (byRank[r]) byRank[r].push(w);
+        else byRank['B'].push(w);
+      });
+
+      let selected = [];
+      const shuffle = arr => [...arr].sort(() => Math.random() - 0.5);
+
+      if (level === 'beginner') {
+        selected = shuffle(byRank.S).slice(0, count);
+        if (selected.length < count) {
+          selected = selected.concat(shuffle([...byRank.A, ...byRank.B]).slice(0, count - selected.length));
+        }
+      } else if (level === 'intermediate') {
+        const sCount = Math.round(count * 0.3);
+        const aCount = count - sCount;
+        selected = [...shuffle(byRank.S).slice(0, sCount), ...shuffle(byRank.A).slice(0, aCount)];
+      } else if (level === 'advanced') {
+        const aCount = Math.round(count * 0.3);
+        const bCount = count - aCount;
+        selected = [...shuffle(byRank.A).slice(0, aCount), ...shuffle(byRank.B).slice(0, bCount)];
+      } else if (level === 'super') {
+        const bCount = Math.round(count * 0.3);
+        const cCount = count - bCount;
+        selected = [...shuffle(byRank.B).slice(0, bCount), ...shuffle(byRank.C).slice(0, cCount)];
+      } else if (level === 'hell') {
+        const cCount = Math.round(count * 0.3);
+        const dCount = count - cCount;
+        selected = [...shuffle(byRank.C).slice(0, cCount), ...shuffle(byRank.D).slice(0, dCount)];
+      } else {
+        selected = shuffle(pool).slice(0, count);
+      }
+
+      if (selected.length < count) {
+        const remain = pool.filter(w => !selected.includes(w));
+        selected = selected.concat(shuffle(remain).slice(0, count - selected.length));
+      }
+
+      return shuffle(selected).map(target => buildQuestionOptions(target, mode, pool));
+    }
+
+    function buildQuestionOptions(target, mode, fullPool = wordsData) {
+      let prompt = '', mainText = '', subText = '', correctVal = '';
+
+      if (mode === 'en-ja') {
+        prompt = 'この英単語の意味を選んでください';
+        mainText = target.word;
+        correctVal = target.meaning;
+      } else if (mode === 'ja-en') {
+        prompt = 'この日本語の意味に当てはまる英単語を選んでください';
+        mainText = target.meaning;
+        correctVal = target.word;
+      } else if (mode === 'fill-in') {
+        prompt = 'カッコに入る最も適切な単語を選んでください';
+        mainText = target.sentence || `( ) is very important.`;
+        subText = target.translation ? `訳: ${target.translation}` : '';
+        correctVal = target.answer || target.word;
+      } else {
+        prompt = '意味と例文を見て、正しい英単語のスペルを完成させてください';
+        mainText = target.meaning;
+        subText = target.sentence ? `例文: ${target.sentence}` : '';
+        correctVal = target.word;
+      }
+
+      const poolOthers = fullPool.filter(w => w.id !== target.id);
+      const shuffledOthers = [...poolOthers].sort(() => Math.random() - 0.5);
+
+      const dummyList = [];
+      for (const other of shuffledOthers) {
+        const val = (mode === 'en-ja') ? other.meaning : (mode === 'fill-in' ? (other.answer || other.word) : other.word);
+        if (val && val !== correctVal && !dummyList.some(d => d.text === val)) {
+          dummyList.push({ wordObj: other, text: val });
+        }
+        if (dummyList.length === 3) break;
+      }
+
+      const allChoices = [
+        { wordObj: target, text: correctVal, isCorrect: true },
+        ...dummyList.map(d => ({ wordObj: d.wordObj, text: d.text, isCorrect: false }))
+      ].sort(() => Math.random() - 0.5);
+
+      return {
+        target: target,
+        prompt: prompt,
+        mainText: mainText,
+        subText: subText,
+        choices: allChoices
+      };
+    }
+
+    function renderQuestionUI() {
+      const q = currentQuiz.questions[currentQuiz.currentIndex];
+      if (!q) return;
+
+      const total = currentQuiz.questions.length;
+      const current = currentQuiz.currentIndex + 1;
+
+      document.getElementById('current-q-index').textContent = current;
+      document.getElementById('total-q-index').textContent = total;
+      document.getElementById('progress-bar-fill').style.width = `${(current / total) * 100}%`;
+
+      const lvlNames = { beginner: '初級', intermediate: '中級', advanced: '上級', super: '超級', hell: '地獄級', random: 'ランダム' };
+      const modeNames = { 'en-ja': '英語 → 日本語', 'ja-en': '日本語 → 英語', 'fill-in': '英文穴埋め', 'spelling': '裏・スペルタイピング' };
+
+      const lvlBadge = document.getElementById('quiz-level-badge');
+      lvlBadge.textContent = lvlNames[currentQuiz.level] || '標準';
+      lvlBadge.className = `px-2.5 py-1 rounded-md text-xs font-bold ${currentQuiz.level === 'hell' ? 'bg-rose-100 text-rose-800 border border-rose-300' : 'badge-b'}`;
+
+      document.getElementById('quiz-mode-badge').textContent = modeNames[currentQuiz.mode] || '';
+
+      document.getElementById('q-unit-tag').textContent = (q.target.unit || 'UNIT').toUpperCase();
+      const rankTag = document.getElementById('q-rank-tag');
+      rankTag.textContent = `${q.target.rank}ランク`;
+      rankTag.className = `text-[10px] font-bold px-2 py-0.5 rounded badge-${q.target.rank.toLowerCase()}`;
+
+      const choicesContainer = document.getElementById('choices-container');
+      const spellingContainer = document.getElementById('spelling-container');
+
+      if (currentQuiz.mode === 'spelling') {
+        choicesContainer.classList.add('hidden');
+        spellingContainer.classList.remove('hidden');
+
+        document.getElementById('question-prompt-label').textContent = '意味と例文を見て、正しい英単語のスペルを完成させてください';
+        document.getElementById('question-main-text').textContent = q.target.meaning;
+
+        const subTextEl = document.getElementById('question-sub-text');
+        subTextEl.textContent = q.target.sentence ? `例文: ${q.target.sentence}` : '';
+        subTextEl.classList.remove('hidden');
+
+        setupSpellingPuzzle(q.target.word);
+      } else {
+        spellingContainer.classList.add('hidden');
+        choicesContainer.classList.remove('hidden');
+
+        document.getElementById('question-prompt-label').textContent = q.prompt;
+        document.getElementById('question-main-text').textContent = q.mainText;
+
+        const subTextEl = document.getElementById('question-sub-text');
+        if (q.subText) {
+          subTextEl.textContent = q.subText;
+          subTextEl.classList.remove('hidden');
+        } else {
+          subTextEl.classList.add('hidden');
+        }
+
+        choicesContainer.innerHTML = '';
+        q.choices.forEach((choice, index) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'choice-btn w-full p-4 rounded-xl border-2 border-slate-200 hover:border-indigo-500 hover:bg-indigo-50/40 text-left font-bold text-sm text-slate-800 transition flex items-center gap-3 bg-white shadow-xs';
+          btn.innerHTML = `
+            <span class="w-7 h-7 rounded-lg bg-slate-100 text-slate-600 text-xs font-extrabold flex items-center justify-center shrink-0">
+              ${['A', 'B', 'C', 'D'][index]}
+            </span>
+            <span class="flex-1">${choice.text}</span>
+          `;
+          btn.onclick = () => handleChoice(choice, btn);
+          choicesContainer.appendChild(btn);
+        });
+      }
+
+      document.getElementById('feedback-panel').classList.add('hidden');
+    }
+
+    function handleChoice(selectedChoice, clickedBtn) {
+      const q = currentQuiz.questions[currentQuiz.currentIndex];
+      const isCorrect = !!selectedChoice.isCorrect;
+
+      document.querySelectorAll('.choice-btn').forEach(btn => {
+        btn.disabled = true;
+        btn.classList.add('opacity-70', 'cursor-not-allowed');
+      });
+
+      if (isCorrect) {
+        currentQuiz.score++;
+        if (clickedBtn) {
+          clickedBtn.classList.remove('border-slate-200', 'bg-white', 'opacity-70');
+          clickedBtn.classList.add('border-emerald-500', 'bg-emerald-50', 'text-emerald-900', 'ring-2', 'ring-emerald-400');
+        }
+      } else {
+        if (clickedBtn) {
+          clickedBtn.classList.remove('border-slate-200', 'bg-white', 'opacity-70');
+          clickedBtn.classList.add('border-rose-500', 'bg-rose-50', 'text-rose-900', 'ring-2', 'ring-rose-400');
+        }
+        document.querySelectorAll('.choice-btn').forEach((btn, idx) => {
+          if (q.choices[idx]?.isCorrect) {
+            btn.classList.remove('border-slate-200', 'bg-white', 'opacity-70');
+            btn.classList.add('border-emerald-500', 'bg-emerald-50', 'text-emerald-900', 'font-black');
+          }
+        });
+      }
+
+      currentQuiz.results.push({
+        target: q.target,
+        selectedChoice: selectedChoice,
+        isCorrect: isCorrect
+      });
+
+      renderFeedbackPanel(isCorrect, q, selectedChoice);
+    }
+
+    function renderFeedbackPanel(isCorrect, q, selectedChoice) {
+      const panel = document.getElementById('feedback-panel');
+      const icon = document.getElementById('feedback-icon');
+      const title = document.getElementById('feedback-title');
+      const desc = document.getElementById('feedback-desc');
+      const border = document.getElementById('feedback-header-border');
+
+      panel.classList.remove('hidden', 'bg-emerald-50/80', 'border-emerald-200', 'bg-rose-50/80', 'border-rose-200');
+
+      if (isCorrect) {
+        panel.classList.add('bg-emerald-50/80', 'border-emerald-200');
+        border.className = 'flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-emerald-200/80 pb-3';
+        icon.className = 'w-9 h-9 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-xs';
+        icon.innerHTML = '<i class="ph-bold ph-check text-xl"></i>';
+        title.className = 'font-extrabold text-base text-emerald-900';
+        title.textContent = 'Excellent! 正解です！';
+        desc.className = 'text-xs font-semibold text-emerald-700';
+        desc.textContent = `正解: ${q.target.word} （${q.target.meaning}）`;
+      } else {
+        panel.classList.add('bg-rose-50/80', 'border-rose-200');
+        border.className = 'flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-rose-200/80 pb-3';
+        icon.className = 'w-9 h-9 rounded-full bg-rose-600 text-white flex items-center justify-center shrink-0 shadow-xs';
+        icon.innerHTML = '<i class="ph-bold ph-x text-xl"></i>';
+        title.className = 'font-extrabold text-base text-rose-900';
+        title.textContent = '惜しい！不正解です';
+        desc.className = 'text-xs font-semibold text-rose-700';
+        desc.textContent = `正解は 「${q.target.word}」（${q.target.meaning}） でした`;
+      }
+
+      const choicesExpContainer = document.getElementById('feedback-choices-explanation');
+      choicesExpContainer.innerHTML = '';
+
+      if (currentQuiz.mode === 'spelling') {
+        const item = q.target;
+        const card = document.createElement('div');
+        card.className = 'p-3 rounded-xl border border-emerald-300 bg-emerald-50/70 flex items-start justify-between gap-2 shadow-xs';
+        card.innerHTML = `
+          <div class="space-y-1">
+            <div class="flex items-center gap-1.5">
+              <span class="text-[10px] font-black px-1.5 py-0.5 rounded bg-emerald-200 text-emerald-800">正解単語</span>
+              <span class="text-[10px] font-bold px-1.5 py-0.5 rounded badge-${item.rank.toLowerCase()}">${item.rank}ランク</span>
+            </div>
+            <div class="font-extrabold text-sm text-slate-900">${item.word}</div>
+            <div class="text-[11px] text-slate-600 font-medium">${item.meaning}</div>
+            ${item.sentence ? `<div class="text-[10px] text-indigo-700 font-mono mt-1">${item.sentence}</div>` : ''}
+          </div>
+          <button onclick="speakWord('${item.word}')" class="p-2 rounded-lg bg-white/80 hover:bg-white text-indigo-700 text-base shrink-0 shadow-2xs">
+            <i class="ph-bold ph-speaker-high"></i>
+          </button>
+        `;
+        choicesExpContainer.appendChild(card);
+      } else {
+        q.choices.forEach(ch => {
+          const item = ch.wordObj;
+          const isTarget = ch.isCorrect;
+          const wasSelected = (ch === selectedChoice);
+
+          let borderClass = 'border-slate-200 bg-white';
+          let badgeText = '選択肢';
+          let badgeClass = 'bg-slate-100 text-slate-600';
+
+          if (isTarget) {
+            borderClass = 'border-emerald-300 bg-emerald-50/60 ring-1 ring-emerald-300';
+            badgeText = '正解';
+            badgeClass = 'bg-emerald-600 text-white';
+          } else if (wasSelected) {
+            borderClass = 'border-rose-300 bg-rose-50/60 ring-1 ring-rose-300';
+            badgeText = 'あなたの誤答';
+            badgeClass = 'bg-rose-600 text-white';
+          }
+
+          const card = document.createElement('div');
+          card.className = `p-3 rounded-xl border ${borderClass} flex items-start justify-between gap-2 shadow-xs transition`;
+          card.innerHTML = `
+            <div class="space-y-1">
+              <div class="flex items-center gap-1.5">
+                <span class="text-[10px] font-black px-1.5 py-0.5 rounded ${badgeClass}">${badgeText}</span>
+                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded badge-${item.rank.toLowerCase()}">${item.rank}ランク</span>
+              </div>
+              <div class="font-extrabold text-sm text-slate-900">${item.word}</div>
+              <div class="text-[11px] text-slate-600 font-medium">${item.meaning}</div>
+            </div>
+            <button onclick="speakWord('${item.word}')" class="p-2 rounded-lg bg-slate-50 hover:bg-indigo-50 text-indigo-600 text-base shrink-0 transition" title="発音を再生">
+              <i class="ph-bold ph-speaker-high"></i>
+            </button>
+          `;
+          choicesExpContainer.appendChild(card);
+        });
+      }
+
+      panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function goToNextQuestion() {
+      currentQuiz.currentIndex++;
+      if (currentQuiz.currentIndex < currentQuiz.questions.length) {
+        renderQuestionUI();
+      } else {
+        finishQuiz();
+      }
+    }
+
+    function finishQuiz() {
+      const total = currentQuiz.questions.length;
+      const score = currentQuiz.score;
+      const percent = Math.round((score / total) * 100);
+      const studentName = currentQuiz.studentName || '生徒';
+
+      document.getElementById('result-student-display').textContent = `${studentName} さんのテスト結果`;
+      document.getElementById('result-score-percent').innerHTML = `${percent}<span class="text-xl font-normal text-slate-400">%</span>`;
+      document.getElementById('result-score-correct').textContent = score;
+      document.getElementById('result-score-total').textContent = total;
+
+      const reviewContainer = document.getElementById('result-review-list');
+      reviewContainer.innerHTML = '';
+      const wrongWords = [];
+
+      currentQuiz.results.forEach((res) => {
+        const item = res.target;
+        if (!res.isCorrect) wrongWords.push(item.word);
+
+        const row = document.createElement('div');
+        row.className = 'py-3 flex items-center justify-between gap-3 text-xs';
+        row.innerHTML = `
+          <div class="flex items-center gap-3">
+            <span class="w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs ${res.isCorrect ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+              ${res.isCorrect ? '○' : '✕'}
+            </span>
+            <div>
+              <div class="font-extrabold text-sm text-slate-900 flex items-center gap-1.5">
+                ${item.word}
+                <span class="text-[10px] font-bold px-1.5 py-0.2 rounded badge-${item.rank.toLowerCase()}">${item.rank}</span>
+              </div>
+              <div class="text-[11px] text-slate-500">${item.meaning}</div>
+            </div>
+          </div>
+          <button onclick="speakWord('${item.word}')" class="p-2 rounded-lg bg-slate-100 hover:bg-indigo-50 text-indigo-700 transition" title="発音">
+            <i class="ph-bold ph-speaker-high text-base"></i>
+          </button>
+        `;
+        reviewContainer.appendChild(row);
+      });
+
+      const newLog = {
+        date: new Date().toLocaleString('ja-JP'),
+        student: studentName,
+        unitFilter: currentQuiz.unitFilter,
+        mode: currentQuiz.mode,
+        level: currentQuiz.level,
+        score: score,
+        total: total,
+        percent: percent,
+        wrongWords: wrongWords
+      };
+
+      saveQuizLog(newLog);
+      
+      const sentNotice = document.getElementById('result-sheet-sent-notice');
+      const sentText = document.getElementById('result-sheet-sent-text');
+      const gasUrl = localStorage.getItem('m3_gas_url');
+
+      if (gasUrl) {
+        sendToGoogleSheetIfConfigured(newLog);
+        if (sentNotice) sentNotice.className = 'inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-800 border border-emerald-200 px-3.5 py-1.5 rounded-full text-xs font-bold';
+        if (sentText) sentText.textContent = '先生のスプレッドシートへ成績を提出しました！';
+      } else {
+        if (sentNotice) sentNotice.className = 'inline-flex items-center gap-1.5 bg-amber-50 text-amber-800 border border-amber-200 px-3.5 py-1.5 rounded-full text-xs font-bold';
+        if (sentText) sentText.textContent = '※ スプレッドシート未設定のため端末内のみに保存されました';
+      }
+
+      showScreen('result');
+    }
+
+    function retryCurrentQuiz() {
+      startQuiz();
+    }
+
+    function confirmQuitQuiz() {
+      if (confirm('テストを中断してホームに戻りますか？')) {
+        showScreen('home');
+      }
+    }
+
+    function speakWord(text) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const clean = text.replace(/[\(\)\[\]]/g, '').trim();
+      const utter = new SpeechSynthesisUtterance(clean);
+      utter.lang = 'en-US';
+      utter.rate = 0.9;
+      window.speechSynthesis.speak(utter);
+    }
+
+    function speakCurrentWord() {
+      const q = currentQuiz.questions[currentQuiz.currentIndex];
+      if (q && q.target) speakWord(q.target.word);
+    }
+
+    // ==========================================
+    // 4. 裏モード: スペルタイピング処理
+    // ==========================================
+    function setupSpellingPuzzle(targetWord) {
+      const cleanOriginal = targetWord.replace(/[\(\)\[\]]/g, '').trim();
+      spellingState.originalLetters = cleanOriginal.split('');
+      spellingState.targetLetters = cleanOriginal.toLowerCase().split('');
+      spellingState.currentInput = new Array(spellingState.targetLetters.length).fill('');
+      spellingState.revealedHints = [];
+
+      spellingState.targetLetters.forEach((char, idx) => {
+        if (!/^[a-zA-Z]$/.test(char)) {
+          spellingState.currentInput[idx] = spellingState.originalLetters[idx];
+          spellingState.revealedHints.push(idx);
+        }
+      });
+
+      renderSpellingSlots();
+      renderSpellingKeyboard();
+    }
+
+    function renderSpellingSlots() {
+      const container = document.getElementById('spelling-slots');
+      if (!container) return;
+      container.innerHTML = '';
+
+      let firstEmptyIndex = spellingState.currentInput.findIndex((c, idx) => c === '' && !spellingState.revealedHints.includes(idx));
+
+      spellingState.targetLetters.forEach((char, idx) => {
+        if (char === ' ') {
+          const space = document.createElement('div');
+          space.className = 'w-4 sm:w-6';
+          container.appendChild(space);
+          return;
+        }
+
+        const slot = document.createElement('div');
+        const val = spellingState.currentInput[idx];
+        const isHinted = spellingState.revealedHints.includes(idx);
+        const isCurrentActive = (idx === firstEmptyIndex);
+
+        let borderClass = 'border-b-4 border-slate-300 text-slate-800';
+        let bgClass = 'bg-white';
+
+        if (isCurrentActive) {
+          borderClass = 'border-b-4 border-indigo-600 shadow-sm';
+          bgClass = 'bg-indigo-50/50 animate-pulse';
+        } else if (isHinted) {
+          borderClass = 'border-b-4 border-amber-400 text-amber-800 font-bold';
+          bgClass = 'bg-amber-50/60';
+        } else if (val) {
+          borderClass = 'border-b-4 border-slate-700 text-slate-900';
+        }
+
+        slot.className = `w-9 h-12 sm:w-12 sm:h-14 rounded-lg flex items-center justify-center font-mono text-xl sm:text-2xl font-bold transition-all duration-150 ${borderClass} ${bgClass}`;
+        slot.textContent = val || '_';
+
+        slot.onclick = () => {
+          if (!isHinted && spellingState.currentInput[idx]) {
+            spellingState.currentInput[idx] = '';
+            renderSpellingSlots();
+          }
+        };
+
+        container.appendChild(slot);
+      });
+    }
+
+    function renderSpellingKeyboard() {
+      const kbContainer = document.getElementById('spelling-keyboard');
+      if (!kbContainer) return;
+
+      const rows = [
+        ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
+        ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
+        ['z', 'x', 'c', 'v', 'b', 'n', 'm']
+      ];
+
+      kbContainer.innerHTML = '';
+      rows.forEach(rowKeys => {
+        const rowDiv = document.createElement('div');
+        rowDiv.className = 'flex justify-center gap-1 sm:gap-1.5';
+        rowKeys.forEach(k => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'w-7 sm:w-9 h-10 rounded-lg bg-white hover:bg-indigo-50 active:scale-95 border border-slate-200 shadow-xs font-mono font-bold text-xs sm:text-sm text-slate-800 flex items-center justify-center transition';
+          btn.textContent = k;
+          btn.onclick = () => handleSpellingKey(k);
+          rowDiv.appendChild(btn);
+        });
+        kbContainer.appendChild(rowDiv);
+      });
+    }
+
+    function handleSpellingKey(inputChar) {
+      if (!inputChar) return;
+      const lowerChar = inputChar.toLowerCase();
+
+      for (let i = 0; i < spellingState.targetLetters.length; i++) {
+        if (spellingState.currentInput[i] === '' && !spellingState.revealedHints.includes(i)) {
+          const origChar = spellingState.originalLetters ? spellingState.originalLetters[i] : lowerChar;
+          const shouldBeUpper = (origChar && origChar !== origChar.toLowerCase());
+
+          spellingState.currentInput[i] = shouldBeUpper ? lowerChar.toUpperCase() : lowerChar;
+          break;
+        }
+      }
+      renderSpellingSlots();
+
+      const allFilled = spellingState.currentInput.every(c => c !== '');
+      if (allFilled) {
+        setTimeout(() => {
+          const stillFilled = spellingState.currentInput.every(c => c !== '');
+          const panel = document.getElementById('feedback-panel');
+          if (stillFilled && panel && panel.classList.contains('hidden')) {
+            checkSpellingAnswer();
+          }
+        }, 300);
+      }
+    }
+
+    function handleSpellingBackspace() {
+      for (let i = spellingState.currentInput.length - 1; i >= 0; i--) {
+        if (spellingState.currentInput[i] !== '' && !spellingState.revealedHints.includes(i)) {
+          spellingState.currentInput[i] = '';
+          break;
+        }
+      }
+      renderSpellingSlots();
+    }
+
+    function giveSpellingHint() {
+      const unrevealedIndices = [];
+      spellingState.targetLetters.forEach((char, idx) => {
+        if (!spellingState.revealedHints.includes(idx)) {
+          unrevealedIndices.push(idx);
+        }
+      });
+
+      if (unrevealedIndices.length <= 1) {
+        showToast('これ以上ヒントは開けません');
+        return;
+      }
+
+      const hintIdx = unrevealedIndices[0];
+      spellingState.revealedHints.push(hintIdx);
+      const displayChar = spellingState.originalLetters ? spellingState.originalLetters[hintIdx] : spellingState.targetLetters[hintIdx];
+      spellingState.currentInput[hintIdx] = displayChar;
+      renderSpellingSlots();
+      showToast(`ヒント: 「${displayChar}」を開けました！`);
+    }
+
+    function checkSpellingAnswer() {
+      const q = currentQuiz.questions[currentQuiz.currentIndex];
+      if (!q) return;
+
+      const hasEmptySlot = spellingState.currentInput.some((c, idx) => {
+        return spellingState.targetLetters[idx] !== ' ' && (!c || c.trim() === '');
+      });
+
+      if (hasEmptySlot) {
+        showToast('すべてのマスに文字を入れてください');
+        return;
+      }
+
+      const userWord = spellingState.currentInput.join('').toLowerCase().trim();
+      const targetWord = spellingState.targetLetters.join('').toLowerCase().trim();
+      const isCorrect = (userWord === targetWord);
+
+      if (isCorrect) currentQuiz.score++;
+
+      currentQuiz.results.push({
+        target: q.target,
+        selectedChoice: { text: userWord },
+        isCorrect: isCorrect
+      });
+
+      renderFeedbackPanel(isCorrect, q, { wordObj: q.target, text: userWord });
+    }
+
+    function initKeyboardListener() {
+      window.addEventListener('keydown', (e) => {
+        const quizScreen = document.getElementById('screen-quiz');
+        if (!quizScreen || quizScreen.classList.contains('hidden')) return;
+        if (currentQuiz.mode !== 'spelling') return;
+
+        const feedbackPanel = document.getElementById('feedback-panel');
+        if (feedbackPanel && !feedbackPanel.classList.contains('hidden')) {
+          if (e.key === 'Enter') goToNextQuestion();
+          return;
+        }
+
+        if (e.key === 'Backspace') {
+          e.preventDefault();
+          handleSpellingBackspace();
+          return;
+        } else if (e.key === 'Enter') {
+          e.preventDefault();
+          checkSpellingAnswer();
+          return;
+        }
+
+        let char = '';
+        if (/^[a-zA-Z]$/.test(e.key)) {
+          char = e.key;
+        } else if (e.code && /^Key[A-Z]$/.test(e.code)) {
+          char = e.code.replace('Key', '').toLowerCase();
+        }
+
+        if (char) {
+          e.preventDefault();
+          handleSpellingKey(char);
+        }
+      });
+    }
+
+    // ==========================================
+    // 5. 単語管理
+    // ==========================================
+    function openAddWordModal() {
+      document.getElementById('modal-add-word').classList.remove('hidden');
+    }
+    function closeAddWordModal() {
+      document.getElementById('modal-add-word').classList.add('hidden');
+    }
+
+    function submitNewWord() {
+      const rank = document.getElementById('new-word-rank').value;
+      const unit = document.getElementById('new-word-unit').value.trim() || 'unit1';
+      const word = document.getElementById('new-word-text').value.trim();
+      const meaning = document.getElementById('new-word-meaning').value.trim();
+      const sentence = document.getElementById('new-word-sentence').value.trim();
+      const trans = document.getElementById('new-word-trans').value.trim();
+
+      if (!word || !meaning) {
+        showToast('英単語と日本語の意味は必須です');
+        return;
+      }
+
+      const newId = wordsData.length > 0 ? Math.max(...wordsData.map(w => w.id)) + 1 : 1;
+      const newObj = {
+        id: newId,
+        rank: rank,
+        unit: unit,
+        word: word,
+        meaning: meaning,
+        sentence: sentence || `We study about ( ).`,
+        translation: trans || `私たちは${meaning}について勉強します。`,
+        answer: word
+      };
+
+      wordsData.unshift(newObj);
+      saveWordsToStorage();
+      renderManageTable();
+      renderUnitCheckboxes();
+      closeAddWordModal();
+      showToast(`「${word}」を追加しました`);
+    }
+
+    function deleteWord(id) {
+      wordsData = wordsData.filter(w => w.id !== id);
+      saveWordsToStorage();
+      renderManageTable();
+      renderUnitCheckboxes();
+      showToast('単語を削除しました');
+    }
+
+    function resetDefaultWords() {
+      wordsData = [...DEFAULT_WORDS];
+      saveWordsToStorage();
+      renderManageTable();
+      renderUnitCheckboxes();
+      showToast('全370語のマスターデータに復元しました！');
+    }
+
+    function renderManageTable() {
+      const tbody = document.getElementById('manage-table-body');
+      if (!tbody) return;
+
+      const search = (document.getElementById('manage-search-input')?.value || '').toLowerCase().trim();
+      const rankFilter = document.getElementById('manage-rank-filter')?.value || 'ALL';
+
+      let list = [...wordsData];
+      if (search) {
+        list = list.filter(w => w.word.toLowerCase().includes(search) || w.meaning.includes(search));
+      }
+      if (rankFilter !== 'ALL') {
+        list = list.filter(w => (w.rank || '').toUpperCase() === rankFilter);
+      }
+
+      tbody.innerHTML = '';
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-slate-400">該当する単語がありません</td></tr>`;
+        return;
+      }
+
+      list.forEach(w => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-50 transition';
+        tr.innerHTML = `
+          <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold badge-${(w.rank || 'B').toLowerCase()}">${w.rank || 'B'}</span></td>
+          <td class="p-3 font-semibold text-slate-500 uppercase text-[11px]">${w.unit || '-'}</td>
+          <td class="p-3 font-extrabold text-slate-900">${w.word}</td>
+          <td class="p-3 text-slate-700">${w.meaning}</td>
+          <td class="p-3 font-mono text-[11px] text-slate-500 max-w-xs truncate" title="${w.sentence || ''}">${w.sentence || '-'}</td>
+          <td class="p-3 text-center">
+            <button onclick="speakWord('${w.word}')" class="p-1.5 rounded-lg text-indigo-600 hover:bg-indigo-50" title="発音">
+              <i class="ph-bold ph-speaker-high text-base"></i>
+            </button>
+          </td>
+          <td class="p-3 text-center">
+            <button onclick="deleteWord(${w.id})" class="p-1.5 rounded-lg text-rose-500 hover:bg-rose-50" title="削除">
+              <i class="ph-bold ph-trash text-base"></i>
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // ==========================================
+    // 6. アナリティクス & GAS連携（確実なtext/plain送信）
+    // ==========================================
+    function getQuizLogs() {
+      try {
+        return JSON.parse(localStorage.getItem('m3_quiz_logs') || '[]');
+      } catch(e) {
+        return [];
+      }
+    }
+
+    function saveQuizLog(log) {
+      const logs = getQuizLogs();
+      logs.unshift(log);
+      localStorage.setItem('m3_quiz_logs', JSON.stringify(logs.slice(0, 500)));
+    }
+
+    function clearAnalyticsLogs() {
+      if (confirm('すべての解答履歴ログを消去しますか？')) {
+        localStorage.removeItem('m3_quiz_logs');
+        updateAnalyticsDisplay();
+        showToast('履歴を消去しました');
+      }
+    }
+
+    function updateAnalyticsDisplay() {
+      const logs = getQuizLogs();
+      const totalQuizzes = logs.length;
+      let totalQuestions = 0;
+      let totalScore = 0;
+      const wrongCountMap = {};
+
+      logs.forEach(l => {
+        totalQuestions += (l.total || 0);
+        totalScore += (l.score || 0);
+        (l.wrongWords || []).forEach(w => {
+          wrongCountMap[w] = (wrongCountMap[w] || 0) + 1;
+        });
+      });
+
+      const avgAccuracy = totalQuestions > 0 ? Math.round((totalScore / totalQuestions) * 100) : 0;
+      const weakWordsCount = Object.keys(wrongCountMap).length;
+
+      document.getElementById('stat-total-quizzes').innerHTML = `${totalQuizzes} <span class="text-xs font-normal text-slate-400">回</span>`;
+      document.getElementById('stat-total-questions').innerHTML = `${totalQuestions} <span class="text-xs font-normal text-slate-400">問</span>`;
+      document.getElementById('stat-avg-accuracy').innerHTML = `${avgAccuracy}<span class="text-xs font-normal text-slate-400">%</span>`;
+      document.getElementById('stat-weak-words-count').innerHTML = `${weakWordsCount} <span class="text-xs font-normal text-slate-400">語</span>`;
+
+      const select = document.getElementById('student-filter-select');
+      if (select) {
+        const currentVal = select.value;
+        const students = [...new Set(logs.map(l => l.student || '未記入生徒'))];
+        select.innerHTML = '<option value="ALL">全生徒の合計・全体</option>';
+        students.forEach(st => {
+          const opt = document.createElement('option');
+          opt.value = st;
+          opt.textContent = st;
+          select.appendChild(opt);
+        });
+        select.value = currentVal || 'ALL';
+      }
+      renderStudentReport();
+
+      const sortedWeak = Object.entries(wrongCountMap).sort((a,b) => b[1] - a[1]).slice(0, 10);
+      const weakListEl = document.getElementById('weak-words-list');
+      weakListEl.innerHTML = '';
+
+      if (sortedWeak.length === 0) {
+        weakListEl.innerHTML = `<div class="p-4 text-center text-slate-400">まだ誤答データがありません</div>`;
+      } else {
+        sortedWeak.forEach(([word, count], i) => {
+          const targetObj = wordsData.find(w => w.word === word);
+          const div = document.createElement('div');
+          div.className = 'p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between';
+          div.innerHTML = `
+            <div class="flex items-center gap-2">
+              <span class="w-5 h-5 rounded-md ${i < 3 ? 'bg-rose-600 text-white' : 'bg-slate-200 text-slate-600'} flex items-center justify-center font-black text-[10px]">
+                ${i+1}
+              </span>
+              <div>
+                <span class="font-extrabold text-slate-900">${word}</span>
+                <span class="text-[11px] text-slate-500 ml-1.5">${targetObj ? targetObj.meaning : ''}</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="bg-rose-100 text-rose-800 text-[10px] font-bold px-2 py-0.5 rounded-full">${count}回ミス</span>
+              <button onclick="speakWord('${word}')" class="p-1 rounded text-indigo-600 hover:bg-white" title="発音">
+                <i class="ph-bold ph-speaker-high text-sm"></i>
+              </button>
+            </div>
+          `;
+          weakListEl.appendChild(div);
+        });
+      }
+
+      const rankAccContainer = document.getElementById('rank-accuracy-container');
+      rankAccContainer.innerHTML = '';
+      const ranks = ['S', 'A', 'B', 'C', 'D'];
+      const rankColors = { S: 'bg-amber-400', A: 'bg-blue-500', B: 'bg-emerald-500', C: 'bg-orange-500', D: 'bg-rose-500' };
+
+      ranks.forEach(r => {
+        const barDiv = document.createElement('div');
+        barDiv.className = 'space-y-1';
+        barDiv.innerHTML = `
+          <div class="flex justify-between text-xs font-bold">
+            <span class="flex items-center gap-1.5"><span class="px-1.5 py-0.2 rounded text-[10px] badge-${r.toLowerCase()}">${r}ランク</span></span>
+            <span class="text-slate-600 font-mono">全範囲から集計中</span>
+          </div>
+          <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+            <div class="${rankColors[r]} h-full rounded-full" style="width: 75%"></div>
+          </div>
+        `;
+        rankAccContainer.appendChild(barDiv);
+      });
+
+      const tbody = document.getElementById('logs-table-body');
+      tbody.innerHTML = '';
+      if (logs.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="p-6 text-center text-slate-400">解答ログはまだありません</td></tr>`;
+      } else {
+        logs.slice(0, 50).forEach(l => {
+          const tr = document.createElement('tr');
+          tr.className = 'hover:bg-slate-50 transition';
+          tr.innerHTML = `
+            <td class="p-3 text-[11px] text-slate-500 whitespace-nowrap">${l.date}</td>
+            <td class="p-3 font-bold text-slate-900">${l.student || '未記入'}</td>
+            <td class="p-3 uppercase text-[11px] font-semibold text-indigo-700">${l.unitFilter || 'ALL'}</td>
+            <td class="p-3 text-[11px]">${l.mode}</td>
+            <td class="p-3 font-semibold">${l.level}</td>
+            <td class="p-3 font-mono font-bold">${l.score} / ${l.total}</td>
+            <td class="p-3 font-black ${l.percent >= 80 ? 'text-emerald-600' : (l.percent >= 60 ? 'text-indigo-600' : 'text-rose-600')}">${l.percent}%</td>
+            <td class="p-3 text-[11px] text-slate-500 max-w-xs truncate" title="${(l.wrongWords || []).join(', ')}">${(l.wrongWords || []).join(', ') || '-'}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+    }
+
+    function renderStudentReport() {
+      const select = document.getElementById('student-filter-select');
+      const student = select ? select.value : 'ALL';
+      const container = document.getElementById('student-report-card');
+      if (!container) return;
+
+      const logs = getQuizLogs();
+      const filtered = (student === 'ALL') ? logs : logs.filter(l => (l.student || '未記入生徒') === student);
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="text-slate-400">データがありません</div>`;
+        return;
+      }
+
+      const totalQ = filtered.reduce((acc, cur) => acc + (cur.total || 0), 0);
+      const totalS = filtered.reduce((acc, cur) => acc + (cur.score || 0), 0);
+      const avg = totalQ > 0 ? Math.round((totalS / totalQ) * 100) : 0;
+      const wrongs = [];
+      filtered.forEach(l => wrongs.push(...(l.wrongWords || [])));
+
+      container.innerHTML = `
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+          <div class="bg-white p-2.5 rounded-lg border border-slate-200">
+            <span class="text-slate-400 text-[10px]">受験回数</span>
+            <div class="font-black text-slate-900 text-lg">${filtered.length} 回</div>
+          </div>
+          <div class="bg-white p-2.5 rounded-lg border border-slate-200">
+            <span class="text-slate-400 text-[10px]">平均正答率</span>
+            <div class="font-black text-emerald-600 text-lg">${avg}%</div>
+          </div>
+          <div class="bg-white p-2.5 rounded-lg border border-slate-200">
+            <span class="text-slate-400 text-[10px]">総正解数</span>
+            <div class="font-black text-indigo-600 text-lg">${totalS} / ${totalQ}</div>
+          </div>
+          <div class="bg-white p-2.5 rounded-lg border border-slate-200">
+            <span class="text-slate-400 text-[10px]">間違えた単語数</span>
+            <div class="font-black text-rose-600 text-lg">${wrongs.length} 語</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function openSheetSyncModal() {
+      const storedUrl = localStorage.getItem('m3_gas_url') || '';
+      document.getElementById('sheet-gas-url-input').value = storedUrl;
+      document.getElementById('modal-sheet-sync').classList.remove('hidden');
+    }
+    function closeSheetSyncModal() {
+      document.getElementById('modal-sheet-sync').classList.add('hidden');
+    }
+
+    function saveSheetGasUrl() {
+      const url = document.getElementById('sheet-gas-url-input').value.trim();
+      localStorage.setItem('m3_gas_url', url);
+      updateSheetSyncStatusBar();
+      closeSheetSyncModal();
+      showToast('スプレッドシート連携設定を保存しました');
+    }
+
+    function updateSheetSyncStatusBar() {
+      const gasUrl = localStorage.getItem('m3_gas_url');
+      const dot = document.getElementById('sheet-status-dot');
+      const text = document.getElementById('sheet-status-text');
+      if (dot && text) {
+        if (gasUrl) {
+          dot.className = 'w-3 h-3 rounded-full bg-emerald-500 animate-pulse';
+          text.textContent = 'Google スプレッドシート連携: 接続中（自動送信ON）';
+        } else {
+          dot.className = 'w-3 h-3 rounded-full bg-slate-400';
+          text.textContent = 'Google スプレッドシート連携: 未設定（端末内集計のみ）';
+        }
+      }
+    }
+
+    function copyGasCode(btnEl) {
+      navigator.clipboard.writeText(PURE_GAS_CODE).then(() => {
+        showToast('📋 GASコードをコピーしました！');
+      });
+    }
+
+    // Google Apps Scriptへ最も安全・確実に届ける通信関数 (text/plain形式)
+    async function sendToGoogleSheetIfConfigured(logData) {
+      const gasUrl = localStorage.getItem('m3_gas_url');
+      if (!gasUrl) return;
+
+      try {
+        await fetch(gasUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          cache: 'no-cache',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(logData)
+        });
+      } catch (e) {
+        console.warn('送信失敗:', e);
+      }
+    }
+
+    async function testSheetConnection() {
+      const inputEl = document.getElementById('sheet-gas-url-input');
+      const url = inputEl ? inputEl.value.trim() : '';
+
+      if (!url) {
+        showToast('⚠️ URLを入力してください');
+        return;
+      }
+
+      showToast('🚀 テスト成績を送信中...');
+
+      try {
+        await fetch(url, {
+          method: 'POST',
+          mode: 'no-cors',
+          cache: 'no-cache',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            date: new Date().toLocaleString('ja-JP'),
+            student: 'テスト生徒(通信確認成功)',
+            unitFilter: 'TEST',
+            mode: '英語→日本語',
+            level: '中級',
+            score: 10,
+            total: 10,
+            percent: 100,
+            wrongWords: []
+          })
+        });
+
+        localStorage.setItem('m3_gas_url', url);
+        updateSheetSyncStatusBar();
+        showToast('✅ 送信完了！スプレッドシートに1行入ったかご確認ください！');
+      } catch(err) {
+        showToast('❌ 送信に失敗しました。URLをご確認ください');
+      }
+    }
+
+    function exportLogsToCSV() {
+      const logs = getQuizLogs();
+      if (logs.length === 0) {
+        showToast('エクスポートするログがありません');
+        return;
+      }
+      let csv = '\uFEFF日時,生徒名,出題範囲,モード,難易度,得点,総問題数,正答率,間違えた単語\n';
+      logs.forEach(l => {
+        csv += `"${l.date}","${l.student || '未記入'}","${l.unitFilter || 'ALL'}","${l.mode}","${l.level}",${l.score},${l.total},"${l.percent}%","${(l.wrongWords || []).join(';')}"\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `中3英単語_成績ログ_${new Date().toISOString().slice(0,10)}.csv`;
+      link.click();
+      showToast('CSVファイルを書き出しました');
+    }
+
+    // ==========================================
+    // 7. 辞書検索
+    // ==========================================
+    function quickDictSearch(word) {
+      const input = document.getElementById('dict-search-input');
+      if (input) input.value = word;
+      searchDictionary(word);
+    }
+
+    function clearDictSearch() {
+      const input = document.getElementById('dict-search-input');
+      if (input) input.value = '';
+      document.getElementById('dict-card').classList.add('hidden');
+      document.getElementById('dict-loading').classList.add('hidden');
+      document.getElementById('dict-initial-guide').classList.remove('hidden');
+      input.focus();
+    }
+
+    function handleDictionarySearch(e) {
+      if (e) e.preventDefault();
+      const query = document.getElementById('dict-search-input')?.value.trim();
+      if (!query) {
+        showToast('検索する単語を入力してください');
+        return;
+      }
+      searchDictionary(query);
+    }
+
+    async function searchDictionary(query) {
+      const cleanQuery = query.toLowerCase().trim();
+      const guide = document.getElementById('dict-initial-guide');
+      const card = document.getElementById('dict-card');
+      const loading = document.getElementById('dict-loading');
+
+      guide.classList.add('hidden');
+      card.classList.add('hidden');
+      loading.classList.remove('hidden');
+
+      const localMatch = wordsData.find(w => w.word.toLowerCase() === cleanQuery) ||
+                         wordsData.find(w => w.word.toLowerCase().includes(cleanQuery));
+
+      if (localMatch) {
+        loading.classList.add('hidden');
+        renderLocalWordCard(localMatch);
+        return;
+      }
+
+      try {
+        const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(cleanQuery)}`);
+        if (res.ok) {
+          const data = await res.json();
+          loading.classList.add('hidden');
+          renderExternalWordCard(cleanQuery, data[0]);
+        } else {
+          loading.classList.add('hidden');
+          renderNotFoundCard(cleanQuery);
+        }
+      } catch (err) {
+        loading.classList.add('hidden');
+        renderNotFoundCard(cleanQuery);
+      }
+    }
+
+    function renderLocalWordCard(item) {
+      const card = document.getElementById('dict-card');
+      card.innerHTML = `
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="bg-indigo-100 text-indigo-700 text-xs px-2.5 py-0.5 rounded-full font-bold flex items-center gap-1">
+                <i class="ph-bold ph-check-circle"></i> 教科書収録単語
+              </span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded badge-${item.rank.toLowerCase()}">${item.rank}ランク</span>
+              <span class="text-xs text-slate-400 font-semibold uppercase">${item.unit}</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <h3 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">${item.word}</h3>
+              <button onclick="speakWord('${item.word}')" class="p-2.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 transition" title="ネイティブ発音を聴く">
+                <i class="ph-bold ph-speaker-high text-xl"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <div>
+            <div class="text-[11px] font-extrabold uppercase tracking-wider text-slate-400 mb-1">日本語の意味</div>
+            <div class="text-xl font-bold text-slate-800 bg-slate-50 p-3.5 rounded-xl border border-slate-100">
+              ${item.meaning}
+            </div>
+          </div>
+
+          ${item.sentence ? `
+            <div>
+              <div class="text-[11px] font-extrabold uppercase tracking-wider text-slate-400 mb-1">教科書の穴埋め例文</div>
+              <div class="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100 space-y-1.5 font-mono text-sm text-slate-800">
+                <div class="flex items-center justify-between">
+                  <div>${item.sentence.replace('( )', `<span class="bg-indigo-200 px-1.5 py-0.5 rounded font-bold text-indigo-900">(${item.answer || item.word})</span>`)}</div>
+                  <button onclick="speakWord('${item.sentence.replace(/\(.*?\)/g, item.answer || item.word)}')" class="text-indigo-600 hover:text-indigo-800 p-1" title="例文を読み上げる">
+                    <i class="ph-bold ph-speaker-high text-base"></i>
+                  </button>
+                </div>
+                ${item.translation ? `<div class="text-xs text-slate-500 font-sans mt-1">訳: ${item.translation}</div>` : ''}
+              </div>
+            </div>
+          ` : ''}
+        </div>
+      `;
+      card.classList.remove('hidden');
+    }
+
+    function renderExternalWordCard(query, apiData) {
+      const card = document.getElementById('dict-card');
+      const phonetic = apiData?.phonetics?.find(p => p.text)?.text || '';
+      const meanings = apiData?.meanings || [];
+      
+      let meaningsHtml = '';
+      meanings.slice(0, 3).forEach(m => {
+        const def = m.definitions[0]?.definition || '';
+        const example = m.definitions[0]?.example || '';
+        meaningsHtml += `
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 space-y-1">
+            <span class="text-[10px] font-black uppercase text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded">${m.partOfSpeech}</span>
+            <div class="text-xs text-slate-800 font-medium leading-relaxed">${def}</div>
+            ${example ? `<div class="text-[11px] text-slate-500 italic">" ${example} "</div>` : ''}
+          </div>
+        `;
+      });
+
+      card.innerHTML = `
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="bg-amber-100 text-amber-800 text-xs px-2.5 py-0.5 rounded-full font-bold flex items-center gap-1">
+                <i class="ph-bold ph-globe"></i> 外部辞書より取得
+              </span>
+              <span class="text-xs text-slate-400 font-mono">${phonetic}</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <h3 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">${apiData.word || query}</h3>
+              <button onclick="speakWord('${apiData.word || query}')" class="p-2.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 transition" title="ネイティブ発音を聴く">
+                <i class="ph-bold ph-speaker-high text-xl"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <div class="text-[11px] font-extrabold uppercase tracking-wider text-slate-400">英語の定義・意味 (Definitions)</div>
+          <div class="grid grid-cols-1 gap-2.5">
+            ${meaningsHtml || '<div class="text-xs text-slate-500">定義が見つかりませんでした</div>'}
+          </div>
+        </div>
+      `;
+      card.classList.remove('hidden');
+    }
+
+    function renderNotFoundCard(query) {
+      const card = document.getElementById('dict-card');
+      card.innerHTML = `
+        <div class="text-center py-6 space-y-4">
+          <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-2xl mx-auto flex items-center justify-center text-2xl">
+            <i class="ph-bold ph-question"></i>
+          </div>
+          <div class="space-y-1">
+            <h3 class="text-2xl font-black text-slate-900">「${query}」</h3>
+            <p class="text-xs text-slate-500">辞書データベースに該当が見つかりませんでしたが、発音の確認が可能です。</p>
+          </div>
+          <button onclick="speakWord('${query}')" class="px-4 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-xl text-xs font-bold transition">
+            発音を聴く
+          </button>
+        </div>
+      `;
+      card.classList.remove('hidden');
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const text = document.getElementById('toast-message');
+      text.textContent = msg;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 2500);
+    }
+  </script>
+</body>
+</html>
